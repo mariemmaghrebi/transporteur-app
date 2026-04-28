@@ -1,0 +1,143 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* Reset complet des marges */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #f3f4f6;
+}
+
+/* Supprimer les marges des conteneurs Material */
+.mat-sidenav-container {
+  height: 100% !important;
+}
+
+.mat-drawer-container {
+  height: 100% !important;
+}
+
+/* ========== STYLES RESPONSIVES GLOBAUX ========== */
+
+/* Variables pour les breakpoints */
+:root {
+  --breakpoint-mobile: 768px;
+  --breakpoint-tablet: 1024px;
+  --breakpoint-desktop: 1200px;
+}
+
+/* Classes utilitaires responsive */
+.hide-on-mobile {
+  display: inherit;
+}
+
+.show-on-mobile {
+  display: none;
+}
+
+/* Scrollbar personnalisée (optionnel) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* ========== MEDIA QUERIES ========== */
+
+/* Tablettes (portrait et paysage) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  body {
+    font-size: 14px;
+  }
+  
+  /* Réduction des marges globales */
+  .mat-drawer-content {
+    padding: 12px !important;
+  }
+}
+
+/* Téléphones (portrait et paysage) */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 13px;
+  }
+  
+  /* Ajustement pour mobile */
+  .mat-drawer-content {
+    padding: 8px !important;
+  }
+  
+  /* Classes utilitaires pour mobile */
+  .hide-on-mobile {
+    display: none !important;
+  }
+  
+  .show-on-mobile {
+    display: flex !important;
+  }
+  
+  /* Amélioration de la taille des éléments tactiles */
+  button, 
+  .mat-button, 
+  .mat-raised-button,
+  .mat-icon-button {
+    min-height: 44px !important;
+  }
+  
+  /* Ajustement des cards sur mobile */
+  .mat-card {
+    margin-bottom: 12px !important;
+    border-radius: 12px !important;
+  }
+  
+  /* Ajustement des dialogues sur mobile */
+  .mat-dialog-container {
+    width: 95% !important;
+    max-width: 95% !important;
+    margin: 16px auto !important;
+    border-radius: 16px !important;
+  }
+  
+  /* Ajustement des snacks bars */
+  .mat-snack-bar-container {
+    margin: 8px !important;
+    width: auto !important;
+  }
+}
+
+/* Grands écrans (desktop large) */
+@media screen and (min-width: 1920px) {
+  body {
+    font-size: 16px;
+  }
+  
+  /* Centrage du contenu sur les très grands écrans */
+  .mat-drawer-content {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+}

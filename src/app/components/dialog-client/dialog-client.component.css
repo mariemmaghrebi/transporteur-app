@@ -1,0 +1,520 @@
+/* ========== STYLES DE BASE ========== */
+.dialog-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #064F82;
+  color: white;
+  flex-shrink: 0;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dialog-header button {
+  color: white;
+}
+
+.dialog-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.dialog-content h3 {
+  color: #064F82;
+  margin: 16px 0 8px 0;
+  font-size: 16px;
+  border-bottom: 2px solid #F48438;
+  padding-bottom: 4px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.half-width {
+  flex: 1;
+}
+
+/* Styles pour les images */
+.images-section {
+  margin: 16px 0;
+}
+
+.section-label {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.images-list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.image-item {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.preview-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.delete-image-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.delete-image-btn:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+.delete-image-btn mat-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.upload-box {
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 16px 0;
+}
+
+.upload-box:hover {
+  border-color: #064F82;
+  background: #f0f4fe;
+}
+
+.upload-box mat-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.upload-box p {
+  margin: 8px 0;
+  color: #374151;
+}
+
+.upload-box small {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  flex-shrink: 0;
+}
+
+/* Boutons */
+.submit-btn {
+  background: #F48438 !important;
+  color: white !important;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #de6a1e !important;
+  transform: translateY(-2px);
+}
+
+.cancel-btn {
+  color: #6b7280 !important;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: rgba(107, 114, 128, 0.1) !important;
+}
+
+/* ========== VERSION TABLETTE (max-width: 1024px) ========== */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .dialog-container {
+    max-width: 90vw;
+    max-height: 85vh;
+  }
+  
+  .dialog-header {
+    padding: 14px 18px;
+  }
+  
+  .dialog-header h2 {
+    font-size: 18px;
+  }
+  
+  .dialog-content {
+    padding: 18px;
+  }
+  
+  .row {
+    gap: 16px;
+  }
+  
+  .image-item {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .preview-image {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .upload-box {
+    padding: 16px;
+  }
+  
+  .upload-box mat-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* ========== VERSION MOBILE (max-width: 768px) ========== */
+@media screen and (max-width: 768px) {
+  .dialog-container {
+    max-width: 95vw;
+    max-height: 90vh;
+    border-radius: 16px;
+  }
+  
+  .dialog-header {
+    padding: 12px 16px;
+  }
+  
+  .dialog-header h2 {
+    font-size: 16px;
+  }
+  
+  .dialog-content {
+    padding: 16px;
+  }
+  
+  .dialog-content h3 {
+    font-size: 14px;
+    margin: 12px 0 6px 0;
+  }
+  
+  .row {
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 0;
+  }
+  
+  .full-width,
+  .half-width {
+    margin-bottom: 12px;
+  }
+  
+  /* Ajustement des champs de formulaire */
+  ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 12px !important;
+  }
+  
+  ::ng-deep .mat-form-field-label {
+    font-size: 13px !important;
+  }
+  
+  ::ng-deep .mat-input-element {
+    font-size: 14px !important;
+  }
+  
+  /* Images sur mobile */
+  .images-section {
+    margin: 12px 0;
+  }
+  
+  .section-label {
+    font-size: 12px;
+  }
+  
+  .images-list {
+    gap: 10px;
+  }
+  
+  .image-item {
+    width: 65px;
+    height: 65px;
+  }
+  
+  .preview-image {
+    width: 65px;
+    height: 65px;
+  }
+  
+  .delete-image-btn {
+    width: 20px;
+    height: 20px;
+    top: -6px;
+    right: -6px;
+  }
+  
+  .delete-image-btn mat-icon {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+  }
+  
+  .upload-box {
+    padding: 12px;
+    margin: 12px 0;
+  }
+  
+  .upload-box mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .upload-box p {
+    font-size: 13px;
+    margin: 6px 0;
+  }
+  
+  .upload-box small {
+    font-size: 10px;
+  }
+  
+  /* Footer actions */
+  .dialog-footer {
+    flex-direction: column-reverse;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+  
+  .dialog-footer button {
+    width: 100%;
+    justify-content: center;
+    padding: 10px !important;
+  }
+  
+  .submit-btn, .cancel-btn {
+    margin: 0 !important;
+  }
+}
+
+/* ========== POUR TRÈS PETITS ÉCRANS (moins de 480px) ========== */
+@media screen and (max-width: 480px) {
+  .dialog-container {
+    max-width: 98vw;
+    max-height: 92vh;
+  }
+  
+  .dialog-header {
+    padding: 10px 14px;
+  }
+  
+  .dialog-header h2 {
+    font-size: 15px;
+  }
+  
+  .dialog-content {
+    padding: 12px;
+  }
+  
+  .dialog-content h3 {
+    font-size: 13px;
+  }
+  
+  ::ng-deep .mat-form-field-label {
+    font-size: 12px !important;
+  }
+  
+  ::ng-deep .mat-input-element {
+    font-size: 13px !important;
+  }
+  
+  .image-item {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .preview-image {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .upload-box {
+    padding: 10px;
+  }
+  
+  .upload-box mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  .upload-box p {
+    font-size: 12px;
+  }
+  
+  .dialog-footer {
+    padding: 12px;
+  }
+  
+  .submit-btn, .cancel-btn {
+    font-size: 13px !important;
+    height: 42px !important;
+  }
+}
+
+/* ========== POUR GRANDS ÉCRANS (min-width: 1920px) ========== */
+@media screen and (min-width: 1920px) {
+  .dialog-container {
+    max-width: 700px;
+    max-height: 85vh;
+  }
+  
+  .dialog-header {
+    padding: 20px 24px;
+  }
+  
+  .dialog-header h2 {
+    font-size: 22px;
+  }
+  
+  .dialog-content {
+    padding: 24px;
+  }
+  
+  .dialog-content h3 {
+    font-size: 18px;
+    margin: 20px 0 12px 0;
+  }
+  
+  .full-width,
+  .half-width {
+    margin-bottom: 20px;
+  }
+  
+  .image-item {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .preview-image {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .upload-box {
+    padding: 24px;
+  }
+  
+  .upload-box mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
+  
+  .dialog-footer {
+    padding: 20px 24px;
+  }
+  
+  .submit-btn, .cancel-btn {
+    padding: 8px 24px !important;
+    font-size: 15px !important;
+  }
+}
+
+/* ========== DIALOG OPTIONS (pour Material Dialog) ========== */
+::ng-deep .mat-dialog-container {
+  padding: 0 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .cdk-overlay-pane {
+  max-width: 95vw !important;
+}
+
+@media screen and (min-width: 769px) {
+  ::ng-deep .cdk-overlay-pane {
+    min-width: 500px !important;
+    max-width: 600px !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  ::ng-deep .cdk-overlay-pane {
+    max-width: 95vw !important;
+    width: 95vw !important;
+  }
+}
+
+/* Animation */
+.dialog-container {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

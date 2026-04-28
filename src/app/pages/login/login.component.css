@@ -1,0 +1,276 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #064F82 0%, #F48438 100%);
+}
+
+.login-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #064F82, #F48438);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  overflow: hidden;
+}
+
+.logo-icon img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.company-name {
+  font-size: 28px;
+  font-weight: bold;
+  color: #064F82;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+
+.route-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.city {
+  font-size: 18px;
+  font-weight: 600;
+  color: #F48438;
+}
+
+.arrow {
+  color: #064F82;
+}
+
+.tagline {
+  color: #6b7280;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #F48438 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+::ng-deep .mat-tab-label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+::ng-deep .mat-tab-label-active {
+  color: #064F82 !important;
+}
+
+/* ========== VERSION TABLETTE ========== */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .login-card {
+    padding: 30px;
+    max-width: 420px;
+  }
+  
+  .logo-icon {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .logo-icon img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .company-name {
+    font-size: 24px;
+  }
+  
+  .city {
+    font-size: 16px;
+  }
+  
+  .login-btn {
+    padding: 10px;
+    font-size: 15px;
+  }
+}
+
+/* ========== VERSION MOBILE ========== */
+@media screen and (max-width: 768px) {
+  .login-container {
+    padding: 16px;
+  }
+  
+  .login-card {
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+  
+  .logo-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+  }
+  
+  .logo-icon img {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .company-name {
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  
+  .route-info {
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  
+  .city {
+    font-size: 14px;
+  }
+  
+  .arrow {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+  
+  .tagline {
+    font-size: 12px;
+  }
+  
+  .logo-section {
+    margin-bottom: 20px;
+  }
+  
+  .auth-form {
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .login-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin-bottom: 0;
+  }
+}
+
+/* ========== POUR TRÈS PETITS ÉCRANS (moins de 400px) ========== */
+@media screen and (max-width: 400px) {
+  .login-card {
+    padding: 20px 16px;
+  }
+  
+  .logo-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .logo-icon img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .company-name {
+    font-size: 18px;
+  }
+  
+  .city {
+    font-size: 12px;
+  }
+  
+  .route-info {
+    gap: 8px;
+  }
+  
+  .login-btn {
+    padding: 8px;
+    font-size: 13px;
+  }
+}
+
+/* ========== POUR GRANDS ÉCRANS ========== */
+@media screen and (min-width: 1920px) {
+  .login-card {
+    max-width: 500px;
+    padding: 50px;
+  }
+  
+  .company-name {
+    font-size: 32px;
+  }
+  
+  .logo-icon {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .logo-icon img {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .city {
+    font-size: 20px;
+  }
+  
+  .login-btn {
+    padding: 14px;
+    font-size: 18px;
+  }
+}

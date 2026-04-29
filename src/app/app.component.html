@@ -1,0 +1,30 @@
+@if (isLoggedIn) {
+  <!-- Bouton menu hamburger pour mobile -->
+  <button class="menu-toggle" (click)="toggleSidebar()" *ngIf="isMobile">
+    <mat-icon>{{ sidebarOpen ? 'close' : 'menu' }}</mat-icon>
+  </button>
+
+  <!-- Overlay pour fermer le sidebar -->
+  <div class="sidebar-overlay" [class.active]="sidebarOpen && isMobile" (click)="closeSidebar()"></div>
+
+  <div class="app-container">
+    <mat-sidenav-container class="sidenav-container">
+      <!-- Sidebar en overlay sur mobile -->
+      <mat-sidenav 
+        mode="side" 
+        [opened]="!isMobile || sidebarOpen" 
+        class="sidebar"
+        [class.sidebar-mobile]="isMobile"
+        [class.sidebar-open]="sidebarOpen">
+        <app-sidebar (closeSidebar)="closeSidebar()"></app-sidebar>
+      </mat-sidenav>
+      
+      <!-- Contenu principal qui ne se décale pas -->
+      <mat-sidenav-content class="content-area" (click)="isMobile && sidebarOpen ? closeSidebar() : null">
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+}

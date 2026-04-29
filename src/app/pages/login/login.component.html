@@ -1,0 +1,45 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo-section">
+      <div class="logo-icon">
+        <img src="assets/images/logo-transporteur.png" alt="Transport Moez">
+      </div>
+      <h1 class="company-name">TRANSPORT MOEZ</h1>
+      <div class="route-info">
+        <span class="city">NANTES</span>
+        <mat-icon class="arrow">arrow_forward</mat-icon>
+        <span class="city">TUNISIE</span>
+      </div>
+      <p class="tagline">Transport de bagages</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email">
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+          L'email est obligatoire
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+          Email invalide
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+        <mat-icon matSuffix (click)="hidePassword = !hidePassword" class="cursor-pointer">
+          {{hidePassword ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          Le mot de passe est obligatoire
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" class="login-btn" [disabled]="loginForm.invalid">
+        SE CONNECTER
+      </button>
+    </form>
+  </div>
+</div>

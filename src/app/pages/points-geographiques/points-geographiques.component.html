@@ -1,0 +1,54 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>
+      <mat-icon>place</mat-icon>
+      Points géographiques
+    </h1>
+    <button mat-raised-button class="add-btn" (click)="ouvrirPopupAjout()">
+      <mat-icon>add</mat-icon>
+      Ajouter un point
+    </button>
+  </div>
+
+  @if (points.length === 0) {
+    <mat-card class="empty-card">
+      <mat-icon>explore</mat-icon>
+      <h3>Aucun point géographique</h3>
+      <p>Commencez par ajouter votre premier point géographique</p>
+      <button mat-raised-button color="primary" (click)="ouvrirPopupAjout()">
+        <mat-icon>add</mat-icon>
+        Ajouter un point
+      </button>
+    </mat-card>
+  } @else {
+    <div class="points-grid">
+      @for (point of points; track point._id) {
+        <div class="point-card">
+          <div class="card-header">
+            <div class="header-icon">
+              <mat-icon>place</mat-icon>
+            </div>
+            <div class="header-info">
+              <h3 class="point-name">{{ point.nom }}</h3>
+             
+            </div>
+            <div class="badge-count">
+              #{{ $index + 1 }}
+            </div>
+          </div>
+          
+          
+          
+          <div class="card-actions">
+            <button mat-button class="action-btn edit" (click)="modifierPoint(point)">
+              <mat-icon>edit</mat-icon> Modifier
+            </button>
+            <button mat-button class="action-btn delete" (click)="supprimerPoint(point._id!)">
+              <mat-icon>delete</mat-icon> Supprimer
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

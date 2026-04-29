@@ -31,6 +31,7 @@ export interface Client {
   nombrePieces: number;
   totalMontant: number;
   statutPaiement: string;
+  devise?: string;
   images: Array<{ url: string; filename: string }>;
 }
 

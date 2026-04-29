@@ -62,7 +62,8 @@ export class DialogClientComponent implements OnInit {
       pointGeo: ['', Validators.required],
       nombrePieces: [1, [Validators.required, Validators.min(1)]],
       totalMontant: [0, [Validators.required, Validators.min(0)]],
-      statutPaiement: ['non_paye', Validators.required]
+      statutPaiement: ['non_paye', Validators.required],
+      devise: ['EUR', Validators.required]
     });
     
     if (this.isEditMode && data.client) {
@@ -86,7 +87,8 @@ export class DialogClientComponent implements OnInit {
       pointGeo: client.pointGeo,
       nombrePieces: client.nombrePieces,
       totalMontant: client.totalMontant,
-      statutPaiement: client.statutPaiement
+      statutPaiement: client.statutPaiement,
+      devise: client.devise || 'EUR'
     });
   }
 
@@ -94,7 +96,7 @@ loadExistingImages(client: Client) {
   if (client.images && client.images.length > 0) {
     this.existingImages = client.images.map(img => ({
       filename: img.filename,
-      url: `http://localhost:3000/uploads/${img.filename}`
+      url: `https://transporteur-backend.onrender.com/uploads/${img.filename}`  // ← Changé
     }));
   }
 }
@@ -155,7 +157,8 @@ markImageForDelete(filename: string) {
         pointGeo: this.clientForm.value.pointGeo,
         nombrePieces: this.clientForm.value.nombrePieces,
         totalMontant: this.clientForm.value.totalMontant,
-        statutPaiement: this.clientForm.value.statutPaiement
+        statutPaiement: this.clientForm.value.statutPaiement,
+        devise: this.clientForm.value.devise 
       };
       
       if (this.isEditMode && this.clientId) {

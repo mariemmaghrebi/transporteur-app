@@ -35,8 +35,7 @@ export class DialogClientComponent implements OnInit {
   isEditMode = false;
   clientId: string | null = null;
   
-  // Gestion des images
- existingImages: Array<{ filename: string; url: string }> = [];
+  existingImages: Array<{ filename: string; url: string }> = [];
   newImages: File[] = [];
   imagesToDelete: string[] = [];
   previewUrls: string[] = [];
@@ -92,14 +91,15 @@ export class DialogClientComponent implements OnInit {
     });
   }
 
-loadExistingImages(client: Client) {
-  if (client.images && client.images.length > 0) {
-    this.existingImages = client.images.map(img => ({
-      filename: img.filename,
-      url: `https://transporteur-backend.onrender.com/uploads/${img.filename}`  // ← Changé
-    }));
+  loadExistingImages(client: Client) {
+    if (client.images && client.images.length > 0) {
+      this.existingImages = client.images.map(img => ({
+        filename: img.filename,
+        url: `https://transporteur-backend.onrender.com/uploads/${img.filename}`
+      }));
+    }
   }
-}
+
   chargerPointsGeographiques() {
     this.pointService.getAll().subscribe({
       next: (data) => {
@@ -134,10 +134,10 @@ loadExistingImages(client: Client) {
     this.previewUrls.splice(index, 1);
   }
 
-markImageForDelete(filename: string) {
-  this.imagesToDelete.push(filename);
-  this.existingImages = this.existingImages.filter(img => img.filename !== filename);
-}
+  markImageForDelete(filename: string) {
+    this.imagesToDelete.push(filename);
+    this.existingImages = this.existingImages.filter(img => img.filename !== filename);
+  }
 
   async onSubmit() {
     if (this.clientForm.valid) {
@@ -158,21 +158,16 @@ markImageForDelete(filename: string) {
         nombrePieces: this.clientForm.value.nombrePieces,
         totalMontant: this.clientForm.value.totalMontant,
         statutPaiement: this.clientForm.value.statutPaiement,
-        devise: this.clientForm.value.devise 
+        devise: this.clientForm.value.devise
       };
       
       if (this.isEditMode && this.clientId) {
-        // Supprimer les images marquées
         for (const imageId of this.imagesToDelete) {
           await this.voyageService.deleteImage(this.clientId, imageId).toPromise();
         }
-        
-        // Ajouter les nouvelles images
         for (const file of this.newImages) {
           await this.voyageService.uploadImage(this.clientId, file).toPromise();
         }
-        
-        // Mettre à jour les infos du client
         this.voyageService.updateClient(this.clientId, clientData).subscribe({
           next: () => {
             this.isLoading = false;
@@ -185,13 +180,11 @@ markImageForDelete(filename: string) {
           }
         });
       } else {
-        // Mode ajout
         clientData.date = new Date();
         clientData.matricule = this.genererMatricule();
         
         this.voyageService.addClient(this.data.voyageId, clientData).subscribe({
           next: async (client) => {
-            // Upload des images
             for (const file of this.newImages) {
               try {
                 await this.voyageService.uploadImage(client._id!, file).toPromise();
@@ -199,7 +192,6 @@ markImageForDelete(filename: string) {
                 console.error('Erreur upload image:', error);
               }
             }
-            
             this.isLoading = false;
             this.snackBar.open('Client ajouté avec succès !', 'Fermer', { duration: 3000 });
             this.dialogRef.close(true);

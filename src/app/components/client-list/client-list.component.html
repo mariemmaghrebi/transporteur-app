@@ -10,7 +10,6 @@
   <!-- Section Filtres -->
   <div class="filters-section">
     <div class="filters-row">
-      <!-- Filtre Point géographique -->
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Filtrer par point géographique</mat-label>
         <mat-select [(ngModel)]="filtrePointGeo" (selectionChange)="onFiltreChange()">
@@ -22,46 +21,38 @@
         <mat-icon matSuffix>place</mat-icon>
       </mat-form-field>
 
-      <!-- Filtre Nom/Prénom -->
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Rechercher par nom ou prénom</mat-label>
-        <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()"
-          placeholder="Expéditeur ou destinataire...">
+        <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()" placeholder="Expéditeur ou destinataire...">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
-      <!-- Bouton reset -->
       <button mat-stroked-button (click)="resetFiltres()" class="reset-btn" *ngIf="filtrePointGeo || filtreNomPrenom">
         <mat-icon>clear</mat-icon>
         Réinitialiser
       </button>
     </div>
 
-    <!-- Résultat des filtres -->
     <div class="filters-info" *ngIf="clientsFiltres.length !== clients.length">
       <mat-icon>info</mat-icon>
       <span>{{ clientsFiltres.length }} client(s) sur {{ clients.length }}</span>
     </div>
   </div>
 
-  <!-- Message si aucun client -->
   <div *ngIf="clients.length === 0" class="empty-state">
     <mat-icon>people_outline</mat-icon>
     <p>Aucun client pour ce voyage</p>
     <button mat-stroked-button (click)="openAddClientDialog()">Ajouter un client</button>
   </div>
 
-  <!-- Message si aucun résultat après filtres -->
   <div *ngIf="clients.length > 0 && clientsFiltres.length === 0" class="empty-state">
     <mat-icon>filter_alt_off</mat-icon>
     <p>Aucun client ne correspond aux filtres</p>
     <button mat-stroked-button (click)="resetFiltres()">Réinitialiser les filtres</button>
   </div>
 
-  <!-- Tableau des clients filtrés -->
   <div class="table-container" *ngIf="clientsFiltres.length > 0">
     <table mat-table [dataSource]="clientsFiltres" class="mat-elevation-z8">
-
       <ng-container matColumnDef="matricule">
         <th mat-header-cell *matHeaderCellDef> Matricule </th>
         <td mat-cell *matCellDef="let client"> {{client.matricule}} </td>
@@ -97,6 +88,7 @@
           <span *ngIf="!client.devise">€</span>
         </td>
       </ng-container>
+
       <ng-container matColumnDef="statutPaiement">
         <th mat-header-cell *matHeaderCellDef> Paiement </th>
         <td mat-cell *matCellDef="let client">
@@ -106,21 +98,25 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="images">
-        <th mat-header-cell *matHeaderCellDef> Images </th>
-        <td mat-cell *matCellDef="let client">
-          <div class="images-cell">
-            <button mat-icon-button class="view-all-images-btn" (click)="openImageViewer(client)"
-              [disabled]="!client.images || client.images.length === 0" title="Voir toutes les images">
-              <mat-icon>photo_library</mat-icon>
-            </button>
-
-            <span *ngIf="!client.images || client.images.length === 0" class="no-image">
-              Aucune image
-            </span>
-          </div>
-        </td>
-      </ng-container>
+   <ng-container matColumnDef="images">
+  <th mat-header-cell *matHeaderCellDef> Images </th>
+  <td mat-cell *matCellDef="let client">
+    <div class="images-cell">
+      <div class="thumbnail-list" *ngIf="client.images && client.images.length > 0">
+        <img *ngFor="let img of client.images.slice(0, 3)" 
+             [src]="'https://transporteur-backend.onrender.com' + img.url" 
+             class="mini-thumbnail"
+             (click)="openImageViewer(client)">
+      </div>
+      <button mat-icon-button class="view-all-images-btn" (click)="openImageViewer(client)" 
+              [disabled]="!client.images || client.images.length === 0" 
+              title="Voir toutes les images">
+        <mat-icon>photo_library</mat-icon>
+      </button>
+      <span *ngIf="!client.images || client.images.length === 0" class="no-image">Aucune image</span>
+    </div>
+  </td>
+</ng-container>
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>

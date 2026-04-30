@@ -122,21 +122,27 @@ export class ClientListComponent implements OnInit {
     return point ? point.nom : pointId;
   }
 
-  openImageViewer(client: Client) {
-    if (!client.images || client.images.length === 0) return;
-    
-    const images = client.images.map(img => this.getImageUrl(img.filename));
-    
-    this.dialog.open(ImageGalleryComponent, {
-      data: { 
-        images: images,
-        clientName: `${client.expediteur.nom} ${client.expediteur.prenom}`
-      },
-      width: '90%',
-      maxWidth: '1200px',
-      panelClass: 'gallery-dialog'
-    });
-  }
+openImageViewer(client: Client) {
+  if (!client.images || client.images.length === 0) return;
+  
+  const baseUrl = 'https://transporteur-backend.onrender.com';
+  const images = client.images.map(img => {
+    if (img.url.startsWith('http')) {
+      return img.url;
+    }
+    return `${baseUrl}${img.url}`;
+  });
+  
+  this.dialog.open(ImageGalleryComponent, {
+    data: { 
+      images: images,
+      clientName: `${client.expediteur.nom} ${client.expediteur.prenom}`
+    },
+    width: '90%',
+    maxWidth: '1200px',
+    panelClass: 'gallery-dialog'
+  });
+}
 
   openAddClientDialog() {
     const dialogRef = this.dialog.open(DialogClientComponent, {

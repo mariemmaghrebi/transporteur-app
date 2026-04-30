@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment.prod';
+
 export interface Voyage {
   _id?: string;
   matricule: string;
@@ -32,15 +32,15 @@ export interface Client {
   totalMontant: number;
   statutPaiement: string;
   devise?: string;
-  images: Array<{ url: string; filename: string }>;
+  images: Array<{ url: string; filename: string; _id?: string }>;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoyageService {
-  // private apiUrl = 'http://localhost:3000/api/voyages';
- private apiUrl = 'https://transporteur-backend.onrender.com/api/voyages';
+  private apiUrl = 'https://transporteur-backend.onrender.com/api/voyages';
+
   constructor(private http: HttpClient) {}
 
   // VOYAGES
@@ -80,14 +80,14 @@ export class VoyageService {
   deleteClient(clientId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/clients/${clientId}`);
   }
-  // Ajouter ces méthodes à la classe
-uploadImage(clientId: string, file: File): Observable<any> {
+
+ uploadImage(clientId: string, file: File): Observable<any> {
   const formData = new FormData();
   formData.append('image', file);
-  return this.http.post(`${this.apiUrl}/clients/${clientId}/upload`, formData);
+  return this.http.post(`https://transporteur-backend.onrender.com/api/voyages/clients/${clientId}/upload`, formData);
 }
 
-deleteImage(clientId: string, imageId: string): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/clients/${clientId}/images/${imageId}`);
-}
+  deleteImage(clientId: string, imageId: string): Observable<any> {
+    return this.http.delete(`https://transporteur-backend.onrender.com/api/voyages/clients/${clientId}/images/${imageId}`);
+  }
 }

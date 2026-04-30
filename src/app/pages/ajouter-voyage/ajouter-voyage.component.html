@@ -10,9 +10,13 @@
   <mat-card class="form-card">
     <form [formGroup]="voyageForm" (ngSubmit)="onSubmit()">
       
+      <!-- Message d'information -->
+      <div *ngIf="messageInfo" class="info-message">
+        <mat-icon>warning</mat-icon>
+        <span>{{ messageInfo }}</span>
+      </div>
 
       <div class="row">
-        <!-- Date aller -->
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Date d'aller</mat-label>
           <input matInput [matDatepicker]="pickerAller" formControlName="dateAller">
@@ -21,9 +25,11 @@
           <mat-error *ngIf="voyageForm.get('dateAller')?.hasError('required')">
             La date d'aller est obligatoire
           </mat-error>
+          <mat-error *ngIf="voyageForm.get('dateAller')?.hasError('dateInvalide')">
+            La date doit être postérieure à aujourd'hui
+          </mat-error>
         </mat-form-field>
 
-        <!-- Date retour -->
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Date de retour</mat-label>
           <input matInput [matDatepicker]="pickerRetour" formControlName="dateRetour">
@@ -35,7 +41,6 @@
         </mat-form-field>
       </div>
 
-      <!-- Actions -->
       <div class="form-actions">
         <button mat-button type="button" (click)="annuler()" class="cancel-btn">
           <mat-icon>cancel</mat-icon>

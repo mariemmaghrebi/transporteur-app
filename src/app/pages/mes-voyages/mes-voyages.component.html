@@ -7,16 +7,16 @@
       </h1>
       <p>Gérez tous vos voyages de transport de bagages</p>
     </div>
-    <div class="header-right">
-      <button *ngIf="!voyageSelectionne" mat-raised-button class="add-voyage-btn" routerLink="/ajouter-voyage" [disabled]="!peutAjouterVoyage()">
-        <mat-icon>add</mat-icon>
-        Ajouter un voyage
-      </button>
-      <button *ngIf="voyageSelectionne" mat-stroked-button (click)="fermerClients()" class="back-btn">
-        <mat-icon>arrow_back</mat-icon>
-        Retour aux voyages
-      </button>
-    </div>
+   <div class="header-right">
+  <button mat-raised-button 
+          class="add-voyage-btn" 
+          routerLink="/ajouter-voyage" 
+          [disabled]="!peutAjouterVoyage()"
+          [matTooltip]="!peutAjouterVoyage() ? 'Vous avez déjà un voyage en attente' : ''">
+    <mat-icon>add</mat-icon>
+    Ajouter un voyage
+  </button>
+</div>
   </div>
 
   <!-- Section des voyages (cachée quand on voit les clients) -->

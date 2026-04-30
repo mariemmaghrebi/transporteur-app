@@ -254,7 +254,9 @@ export class MesVoyagesComponent implements OnInit {
 export class VoyageEditDialogComponent {
   isLoading = false;
   isSuperAdmin = false;
-
+voyages: Voyage[] = [];
+  voyageSelectionne: Voyage | null = null;
+  aUnVoyageEnAttente = false;
   constructor(
     public dialogRef: MatDialogRef<VoyageEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { voyage: Voyage },
@@ -285,7 +287,23 @@ export class VoyageEditDialogComponent {
   close() {
     this.dialogRef.close();
   }
-
+  peutAjouterVoyage(): boolean {
+  if (this.authService.isSuperAdmin()) return true;
+  
+  // Vérifier s'il y a un voyage en attente
+  const aUnVoyageEnAttente = this.voyages.some(v => v.statut === 'en_attente');
+  if (aUnVoyageEnAttente) return false;
+  
+  return true;
+}
+// Vérifier si la date est valide pour création
+estDateValide(dateAller: Date): boolean {
+  const aujourdhui = new Date();
+  aujourdhui.setHours(0, 0, 0, 0);
+  const dateAllerObj = new Date(dateAller);
+  dateAllerObj.setHours(0, 0, 0, 0);
+  return dateAllerObj > aujourdhui;
+}
   save() {
     if (!this.isSuperAdmin && this.data.voyage.statut === 'termine') {
       this.snackBar.open('Ce voyage est terminé. Vous ne pouvez pas le modifier.', 'Fermer', { duration: 3000 });

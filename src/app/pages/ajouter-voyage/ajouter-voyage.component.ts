@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -33,9 +33,10 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './ajouter-voyage.component.html',
   styleUrls: ['./ajouter-voyage.component.css']
 })
-export class AjouterVoyageComponent {
+export class AjouterVoyageComponent implements OnInit {
   voyageForm: FormGroup;
   isLoading = false;
+  messageInfo: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -48,6 +49,24 @@ export class AjouterVoyageComponent {
       dateAller: ['', Validators.required],
       dateRetour: ['', Validators.required]
     });
+  }
+
+  ngOnInit() {
+    this.voyageForm.get('dateAller')?.valueChanges.subscribe(date => {
+      this.verifierDate(date);
+    });
+  }
+
+  verifierDate(dateAller: Date) {
+    const aujourdhui = new Date();
+    aujourdhui.setHours(0, 0, 0, 0);
+    if (dateAller && new Date(dateAller) <= aujourdhui) {
+      this.messageInfo = '⚠️ La date d\'aller doit être postérieure à aujourd\'hui';
+      this.voyageForm.get('dateAller')?.setErrors({ dateInvalide: true });
+    } else {
+      this.messageInfo = '';
+      this.voyageForm.get('dateAller')?.setErrors(null);
+    }
   }
 
   onSubmit() {

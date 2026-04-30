@@ -94,10 +94,8 @@ export class ClientListComponent implements OnInit {
       // Filtre par nom/prénom (expéditeur ou destinataire)
       const searchTerm = this.filtreNomPrenom.toLowerCase();
       const matchNomPrenom = !searchTerm || 
-        client.expediteur.nom.toLowerCase().includes(searchTerm) ||
-        client.expediteur.prenom.toLowerCase().includes(searchTerm) ||
-        client.destinataire.nom.toLowerCase().includes(searchTerm) ||
-        client.destinataire.prenom.toLowerCase().includes(searchTerm);
+        client.expediteur.nomPrenom.toLowerCase().includes(searchTerm) ||
+        client.destinataire.nomPrenom.toLowerCase().includes(searchTerm);
       
       return matchPointGeo && matchNomPrenom;
     });
@@ -136,7 +134,7 @@ openImageViewer(client: Client) {
   this.dialog.open(ImageGalleryComponent, {
     data: { 
       images: images,
-      clientName: `${client.expediteur.nom} ${client.expediteur.prenom}`
+      clientName: `${client.expediteur.nomPrenom}`
     },
     width: '90%',
     maxWidth: '1200px',

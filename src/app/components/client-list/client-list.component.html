@@ -58,21 +58,22 @@
         <td mat-cell *matCellDef="let client"> {{client.matricule}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="expediteur">
-        <th mat-header-cell *matHeaderCellDef> Expéditeur </th>
-        <td mat-cell *matCellDef="let client">
-          <strong>{{client.expediteur?.nom}} {{client.expediteur?.prenom}}</strong><br>
-          <small>{{client.expediteur?.telephone}}</small>
-        </td>
-      </ng-container>
+    <ng-container matColumnDef="expediteur">
+  <th mat-header-cell *matHeaderCellDef> Expéditeur </th>
+  <td mat-cell *matCellDef="let client">
+    <strong>{{client.expediteur?.nomPrenom}}</strong><br>
+    <small>{{client.expediteur?.telephone}}</small>
+  </td>
+</ng-container>
 
-      <ng-container matColumnDef="destinataire">
-        <th mat-header-cell *matHeaderCellDef> Destinataire </th>
-        <td mat-cell *matCellDef="let client">
-          <strong>{{client.destinataire?.nom}} {{client.destinataire?.prenom}}</strong><br>
-          <small>{{client.destinataire?.telephone}}</small>
-        </td>
-      </ng-container>
+     <!-- Colonne Destinataire -->
+<ng-container matColumnDef="destinataire">
+  <th mat-header-cell *matHeaderCellDef> Destinataire </th>
+  <td mat-cell *matCellDef="let client">
+    <strong>{{client.destinataire?.nomPrenom}}</strong><br>
+    <small>{{client.destinataire?.telephone}}</small>
+  </td>
+</ng-container>
 
       <ng-container matColumnDef="nombrePieces">
         <th mat-header-cell *matHeaderCellDef> Pièces </th>

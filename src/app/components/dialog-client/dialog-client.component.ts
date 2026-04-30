@@ -52,11 +52,9 @@ export class DialogClientComponent implements OnInit {
     this.clientId = data.client?._id || null;
     
     this.clientForm = this.fb.group({
-      expediteurNom: ['', Validators.required],
-      expediteurPrenom: ['', Validators.required],
+     expediteurNomPrenom: ['', Validators.required],
       expediteurTelephone: ['', Validators.required],
-      destinataireNom: ['', Validators.required],
-      destinatairePrenom: ['', Validators.required],
+      destinataireNomPrenom: ['', Validators.required],
       destinataireTelephone: ['', Validators.required],
       pointGeo: ['', Validators.required],
       nombrePieces: [1, [Validators.required, Validators.min(1)]],
@@ -77,11 +75,9 @@ export class DialogClientComponent implements OnInit {
 
   prefillForm(client: Client) {
     this.clientForm.patchValue({
-      expediteurNom: client.expediteur.nom,
-      expediteurPrenom: client.expediteur.prenom,
+      expediteurNomPrenom: client.expediteur.nomPrenom,
       expediteurTelephone: client.expediteur.telephone,
-      destinataireNom: client.destinataire.nom,
-      destinatairePrenom: client.destinataire.prenom,
+      destinataireNomPrenom: client.destinataire.nomPrenom,
       destinataireTelephone: client.destinataire.telephone,
       pointGeo: client.pointGeo,
       nombrePieces: client.nombrePieces,
@@ -145,13 +141,11 @@ export class DialogClientComponent implements OnInit {
       
       const clientData: any = {
         expediteur: {
-          nom: this.clientForm.value.expediteurNom,
-          prenom: this.clientForm.value.expediteurPrenom,
+         nomPrenom: this.clientForm.value.expediteurNomPrenom,
           telephone: this.clientForm.value.expediteurTelephone
         },
         destinataire: {
-          nom: this.clientForm.value.destinataireNom,
-          prenom: this.clientForm.value.destinatairePrenom,
+         nomPrenom: this.clientForm.value.destinataireNomPrenom,
           telephone: this.clientForm.value.destinataireTelephone
         },
         pointGeo: this.clientForm.value.pointGeo,

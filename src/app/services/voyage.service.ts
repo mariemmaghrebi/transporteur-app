@@ -18,13 +18,11 @@ export interface Client {
   date: Date;
   matricule: string;
   expediteur: {
-    nom: string;
-    prenom: string;
+   nomPrenom: string;
     telephone: string;
   };
   destinataire: {
-    nom: string;
-    prenom: string;
+   nomPrenom: string;
     telephone: string;
   };
   pointGeo: string;

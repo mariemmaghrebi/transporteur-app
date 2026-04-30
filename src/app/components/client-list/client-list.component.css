@@ -587,3 +587,37 @@ mat-icon {
 .mini-thumbnail:hover {
   transform: scale(1.05);
 }
+/* Conteneur de la table avec scroll adaptatif */
+.table-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-height: 400px; /* Hauteur par défaut */
+}
+
+/* Hauteur différente selon la taille de l'écran */
+@media screen and (min-width: 1200px) {
+  .table-container {
+    max-height: 500px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .table-container {
+    max-height: 300px;
+  }
+}
+
+/* Pour forcer le scroll vertical quand nécessaire */
+.table-container {
+  overflow-y: auto;
+}
+
+/* L'en-tête reste fixe pendant le scroll */
+thead tr {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}

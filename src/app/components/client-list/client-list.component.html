@@ -42,7 +42,7 @@
   <div *ngIf="clients.length === 0" class="empty-state">
     <mat-icon>people_outline</mat-icon>
     <p>Aucun client pour ce voyage</p>
-    <button mat-stroked-button (click)="openAddClientDialog()">Ajouter un client</button>
+    
   </div>
 
   <div *ngIf="clients.length > 0 && clientsFiltres.length === 0" class="empty-state">
@@ -113,18 +113,26 @@
   </td>
 </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
-        <td mat-cell *matCellDef="let client">
-          <button mat-icon-button color="primary" (click)="editClient(client)" title="Modifier">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="deleteClient(client._id)" title="Supprimer">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
+     <!-- Colonne Actions -->
+<ng-container matColumnDef="actions">
+  <th mat-header-cell *matHeaderCellDef> Actions </th>
+  <td mat-cell *matCellDef="let client">
+    <button mat-icon-button 
+            color="primary" 
+            (click)="editClient(client)" 
+            title="Modifier"
+            [disabled]="voyageEstTermine">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button 
+            color="warn" 
+            (click)="deleteClient(client._id)" 
+            title="Supprimer"
+            [disabled]="voyageEstTermine">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </td>
+</ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>

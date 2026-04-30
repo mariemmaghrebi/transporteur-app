@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { VoyageService, Client } from '../../services/voyage.service';
+import { AuthService } from '../../services/auth.service';
 import { PointGeographiqueService, PointGeographique } from '../../services/point-geographique.service';
 import { DialogClientComponent } from '../dialog-client/dialog-client.component';
 import { ImageGalleryComponent } from '../image-gallery/image-gallery/image-gallery.component';
@@ -36,6 +37,7 @@ import { ImageGalleryComponent } from '../image-gallery/image-gallery/image-gall
 })
 export class ClientListComponent implements OnInit {
   @Input() voyageId!: string;
+  @Input() voyageStatut?: string;
   clients: Client[] = [];
   clientsFiltres: Client[] = [];
   pointsGeographiques: PointGeographique[] = [];
@@ -48,6 +50,7 @@ export class ClientListComponent implements OnInit {
 
   constructor(
     private voyageService: VoyageService,
+    private authService: AuthService,
     private pointService: PointGeographiqueService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
@@ -57,7 +60,9 @@ export class ClientListComponent implements OnInit {
     this.loadClients();
     this.loadPointsGeographiques();
   }
-
+get voyageEstTermine(): boolean {
+    return this.voyageStatut === 'termine' && !this.authService.isSuperAdmin();
+  }
   loadClients() {
     if (!this.voyageId) {
       console.error('Pas de voyageId');

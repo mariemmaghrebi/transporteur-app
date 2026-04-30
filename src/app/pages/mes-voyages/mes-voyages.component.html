@@ -73,10 +73,7 @@
       <mat-icon>local_shipping</mat-icon>
       <h3>Aucun voyage</h3>
       <p>Commencez par créer votre premier voyage</p>
-      <button mat-raised-button class="add-voyage-btn" routerLink="/ajouter-voyage" [disabled]="!peutAjouterVoyage()">
-        <mat-icon>add</mat-icon>
-        Ajouter un voyage
-      </button>
+     
       <p *ngIf="!peutAjouterVoyage() && !isSuperAdmin" class="warning-text">
         ⚠️ Vous avez déjà un voyage en attente
       </p>
@@ -84,20 +81,23 @@
   </div>
 
   <!-- Section des clients (visible seulement quand on a sélectionné un voyage) -->
-  <div *ngIf="voyageSelectionne" class="clients-section">
-    <mat-card>
-      <mat-card-header>
-        <div class="clients-header">
-          <mat-card-title>
-            <mat-icon>people</mat-icon>
-            Clients du voyage #{{ voyageSelectionne.matricule }}
-          </mat-card-title>
-        </div>
-      </mat-card-header>
-      
-      <mat-card-content>
-        <app-client-list [voyageId]="voyageSelectionne._id!"></app-client-list>
-      </mat-card-content>
-    </mat-card>
-  </div>
+<div *ngIf="voyageSelectionne" class="clients-section">
+  <mat-card>
+    <mat-card-header>
+      <div class="clients-header">
+        <mat-card-title>
+          <mat-icon>people</mat-icon>
+          Clients du voyage #{{ voyageSelectionne.matricule }}
+        </mat-card-title>
+      </div>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <app-client-list 
+        [voyageId]="voyageSelectionne._id!" 
+        [voyageStatut]="voyageSelectionne.statut">
+      </app-client-list>
+    </mat-card-content>
+  </mat-card>
+</div>
 </div>

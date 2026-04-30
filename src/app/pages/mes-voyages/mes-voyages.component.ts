@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +21,7 @@ import { ClientListComponent } from '../../components/client-list/client-list.co
   selector: 'app-mes-voyages',
   standalone: true,
   imports: [
+    MatTooltipModule,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -90,10 +92,16 @@ export class MesVoyagesComponent implements OnInit {
     return statut === 'en_attente' ? 'En attente' : 'Terminé';
   }
 
-  peutAjouterVoyage(): boolean {
-    if (this.authService.isSuperAdmin()) return true;
-    return !this.aUnVoyageEnAttente;
-  }
+peutAjouterVoyage(): boolean {
+  // Super Admin peut toujours ajouter
+  if (this.authService.isSuperAdmin()) return true;
+  
+  // Vérifier s'il y a un voyage avec statut 'en_attente'
+  const aUnVoyageEnAttente = this.voyages.some(v => v.statut === 'en_attente');
+  
+  // Retourne false si un voyage est en attente
+  return !aUnVoyageEnAttente;
+}
 
   peutModifierVoyage(voyage: Voyage): boolean {
     if (this.authService.isSuperAdmin()) return true;

@@ -199,8 +199,8 @@ export class ImageGalleryComponent {
   }
 
 onImageError() {
-  console.error('Erreur chargement image dans la galerie');
-}
+    console.error('❌ Erreur chargement image:', this.data.images[this.currentIndex]);
+  }
 
   onThumbnailError(index: number) {
     console.error(`Erreur chargement miniature ${index}: ${this.data.images[index]}`);

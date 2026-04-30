@@ -10,48 +10,51 @@
   <mat-card class="form-card">
     <form [formGroup]="voyageForm" (ngSubmit)="onSubmit()">
       
-      <!-- Message d'information -->
-      <div *ngIf="messageInfo" class="info-message">
-        <mat-icon>warning</mat-icon>
+      <!-- Message d'information (erreur ou avertissement) -->
+      <div *ngIf="messageInfo" class="info-message" [class.error-message]="!peutAjouter()">
+        <mat-icon>{{ !peutAjouter() ? 'error' : 'warning' }}</mat-icon>
         <span>{{ messageInfo }}</span>
       </div>
 
-      <div class="row">
-        <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Date d'aller</mat-label>
-          <input matInput [matDatepicker]="pickerAller" formControlName="dateAller">
-          <mat-datepicker-toggle matSuffix [for]="pickerAller"></mat-datepicker-toggle>
-          <mat-datepicker #pickerAller></mat-datepicker>
-          <mat-error *ngIf="voyageForm.get('dateAller')?.hasError('required')">
-            La date d'aller est obligatoire
-          </mat-error>
-          <mat-error *ngIf="voyageForm.get('dateAller')?.hasError('dateInvalide')">
-            La date doit être postérieure à aujourd'hui
-          </mat-error>
-        </mat-form-field>
+      <!-- Désactiver le formulaire si l'admin a déjà un voyage en attente -->
+      <fieldset [disabled]="!peutAjouter() && !isSuperAdmin">
+        <div class="row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Date d'aller</mat-label>
+            <input matInput [matDatepicker]="pickerAller" formControlName="dateAller">
+            <mat-datepicker-toggle matSuffix [for]="pickerAller"></mat-datepicker-toggle>
+            <mat-datepicker #pickerAller></mat-datepicker>
+            <mat-error *ngIf="voyageForm.get('dateAller')?.hasError('required')">
+              La date d'aller est obligatoire
+            </mat-error>
+            <mat-error *ngIf="voyageForm.get('dateAller')?.hasError('dateInvalide')">
+              La date doit être postérieure à aujourd'hui
+            </mat-error>
+          </mat-form-field>
 
-        <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Date de retour</mat-label>
-          <input matInput [matDatepicker]="pickerRetour" formControlName="dateRetour">
-          <mat-datepicker-toggle matSuffix [for]="pickerRetour"></mat-datepicker-toggle>
-          <mat-datepicker #pickerRetour></mat-datepicker>
-          <mat-error *ngIf="voyageForm.get('dateRetour')?.hasError('required')">
-            La date de retour est obligatoire
-          </mat-error>
-        </mat-form-field>
-      </div>
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Date de retour</mat-label>
+            <input matInput [matDatepicker]="pickerRetour" formControlName="dateRetour">
+            <mat-datepicker-toggle matSuffix [for]="pickerRetour"></mat-datepicker-toggle>
+            <mat-datepicker #pickerRetour></mat-datepicker>
+            <mat-error *ngIf="voyageForm.get('dateRetour')?.hasError('required')">
+              La date de retour est obligatoire
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-      <div class="form-actions">
-        <button mat-button type="button" (click)="annuler()" class="cancel-btn">
-          <mat-icon>cancel</mat-icon>
-          Annuler
-        </button>
-        <button mat-raised-button type="submit" [disabled]="isLoading || voyageForm.invalid" class="submit-btn">
-          <mat-icon>save</mat-icon>
-          {{ isLoading ? 'Création en cours...' : 'Créer le voyage' }}
-          <mat-spinner *ngIf="isLoading" diameter="20" class="spinner"></mat-spinner>
-        </button>
-      </div>
+        <div class="form-actions">
+          <button mat-button type="button" (click)="annuler()" class="cancel-btn">
+            <mat-icon>cancel</mat-icon>
+            Annuler
+          </button>
+          <button mat-raised-button type="submit" [disabled]="isLoading || voyageForm.invalid || !peutAjouter()" class="submit-btn">
+            <mat-icon>save</mat-icon>
+            {{ isLoading ? 'Création en cours...' : 'Créer le voyage' }}
+            <mat-spinner *ngIf="isLoading" diameter="20" class="spinner"></mat-spinner>
+          </button>
+        </div>
+      </fieldset>
     </form>
   </mat-card>
 </div>

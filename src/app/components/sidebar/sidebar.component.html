@@ -33,14 +33,16 @@
       <mat-icon>place</mat-icon>
       <span>Points géographiques</span>
     </button>
-  </nav>
 
-  <mat-divider></mat-divider>
+    <!-- Séparateur avant déconnexion -->
+    <div class="nav-separator"></div>
 
-  <div class="sidebar-footer">
-    <button mat-button (click)="logout()" class="logout-btn">
+    <!-- Bouton Déconnexion intégré dans la navigation -->
+    <button mat-button 
+            (click)="logout()" 
+            class="nav-btn logout-nav-btn">
       <mat-icon>logout</mat-icon>
       <span>Déconnexion</span>
     </button>
-  </div>
+  </nav>
 </div>

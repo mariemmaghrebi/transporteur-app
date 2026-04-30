@@ -44,13 +44,15 @@ export class MesVoyagesComponent implements OnInit {
   voyages: Voyage[] = [];
   voyageSelectionne: Voyage | null = null;
   aUnVoyageEnAttente = false;
-
+isSuperAdmin = false;  
   constructor(
     private voyageService: VoyageService,
     private authService: AuthService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.isSuperAdmin = this.authService.isSuperAdmin();  
+  }
 
   ngOnInit() {
     this.chargerVoyages();

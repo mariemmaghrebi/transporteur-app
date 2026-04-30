@@ -438,3 +438,20 @@ mat-card-actions {
     font-size: 20px !important;
   }
 }
+.back-btn {
+  background-color: #6b7280 !important;
+  color: white !important;
+}
+
+.back-btn:hover {
+  background-color: #4b5563 !important;
+}
+
+.add-voyage-btn {
+  background-color: #F48438 !important;
+  color: white !important;
+}
+
+.add-voyage-btn:hover {
+  background-color: #de6a1e !important;
+}

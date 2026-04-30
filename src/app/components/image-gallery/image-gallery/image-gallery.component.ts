@@ -17,13 +17,13 @@ import { MatIconModule } from '@angular/material/icon';
         </button>
       </div>
       
-      <div class="gallery-content">
+      <div class="gallery-content" *ngIf="data.images && data.images.length > 0">
         <button mat-icon-button class="nav-btn prev" (click)="prevImage()" [disabled]="currentIndex === 0">
           <mat-icon>chevron_left</mat-icon>
         </button>
         
         <div class="main-image">
-          <img [src]="data.images[currentIndex]" [alt]="'Image ' + (currentIndex + 1)">
+          <img [src]="data.images[currentIndex]" [alt]="'Image ' + (currentIndex + 1)" (error)="onImageError(currentIndex)">
         </div>
         
         <button mat-icon-button class="nav-btn next" (click)="nextImage()" [disabled]="currentIndex === data.images.length - 1">
@@ -31,18 +31,23 @@ import { MatIconModule } from '@angular/material/icon';
         </button>
       </div>
       
-      <div class="gallery-footer">
+      <div class="gallery-footer" *ngIf="data.images && data.images.length > 0">
         <div class="thumbnails">
           <div *ngFor="let img of data.images; let i = index" 
                class="thumbnail" 
                [class.active]="i === currentIndex"
                (click)="goToImage(i)">
-            <img [src]="img" [alt]="'Miniature ' + (i + 1)">
+            <img [src]="img" [alt]="'Miniature ' + (i + 1)" (error)="onThumbnailError(i)">
           </div>
         </div>
         <div class="image-counter">
           {{ currentIndex + 1 }} / {{ data.images.length }}
         </div>
+      </div>
+      
+      <div class="no-images" *ngIf="!data.images || data.images.length === 0">
+        <mat-icon>image_not_supported</mat-icon>
+        <p>Aucune image disponible</p>
       </div>
     </div>
   `,
@@ -51,6 +56,8 @@ import { MatIconModule } from '@angular/material/icon';
       background: #1a1a1a;
       border-radius: 12px;
       overflow: hidden;
+      min-width: 300px;
+      max-width: 90vw;
     }
     
     .gallery-header {
@@ -72,7 +79,7 @@ import { MatIconModule } from '@angular/material/icon';
       align-items: center;
       justify-content: center;
       padding: 20px;
-      min-height: 500px;
+      min-height: 400px;
       position: relative;
     }
     
@@ -152,6 +159,19 @@ import { MatIconModule } from '@angular/material/icon';
       color: #9ca3af;
       font-size: 14px;
     }
+    
+    .no-images {
+      text-align: center;
+      padding: 60px;
+      color: #9ca3af;
+    }
+    
+    .no-images mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+    }
   `]
 })
 export class ImageGalleryComponent {
@@ -176,6 +196,14 @@ export class ImageGalleryComponent {
 
   goToImage(index: number) {
     this.currentIndex = index;
+  }
+
+  onImageError(index: number) {
+    console.error(`Erreur chargement image ${index}: ${this.data.images[index]}`);
+  }
+
+  onThumbnailError(index: number) {
+    console.error(`Erreur chargement miniature ${index}: ${this.data.images[index]}`);
   }
 
   close() {

@@ -122,6 +122,10 @@ getImageUrl(clientId: string, imageId: string): string {
   return `https://transporteur-backend.onrender.com/api/voyages/clients/${clientId}/images/${imageId}`;
 }
 
+ onImageError(event: any) {
+    console.error('❌ Erreur chargement image:', event.target.src);
+  }
+  
   getPointGeoNom(pointId: string): string {
     const point = this.pointsGeographiques.find(p => p._id === pointId);
     return point ? point.nom : pointId;

@@ -112,7 +112,7 @@ export class ClientListComponent implements OnInit {
   }
 
   getImageUrl(filename: string): string {
-    return `http://localhost:3000/uploads/${filename}`;
+   return `https://transporteur-backend.onrender.com/uploads/${filename}`;
   }
 
   getPointGeoNom(pointId: string): string {
@@ -123,6 +123,7 @@ export class ClientListComponent implements OnInit {
 openImageViewer(client: Client) {
   if (!client.images || client.images.length === 0) return;
   
+  // Construire l'URL complète avec le backend
   const baseUrl = 'https://transporteur-backend.onrender.com';
   const images = client.images.map(img => {
     if (img.url.startsWith('http')) {
@@ -131,10 +132,12 @@ openImageViewer(client: Client) {
     return `${baseUrl}${img.url}`;
   });
   
+  console.log('Images à afficher:', images); // Debug
+  
   this.dialog.open(ImageGalleryComponent, {
     data: { 
       images: images,
-      clientName: `${client.expediteur.nomPrenom}`
+      clientName: client.expediteur.nomPrenom || client.expediteur.nomPrenom
     },
     width: '90%',
     maxWidth: '1200px',

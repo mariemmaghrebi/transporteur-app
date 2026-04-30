@@ -86,15 +86,27 @@ export class DialogClientComponent implements OnInit {
       devise: client.devise || 'EUR'
     });
   }
-
-  loadExistingImages(client: Client) {
-    if (client.images && client.images.length > 0) {
-      this.existingImages = client.images.map(img => ({
+loadExistingImages(client: Client) {
+  console.log('🖼️ Client reçu pour modification:', client);
+  console.log('🖼️ Images du client:', client.images);
+  
+  if (client.images && client.images.length > 0) {
+    this.existingImages = client.images.map(img => {
+      // Construire l'URL à partir de l'ID de l'image et de l'ID du client
+      const imageUrl = `https://transporteur-backend.onrender.com/api/voyages/clients/${client._id}/images/${img._id}`;
+      console.log(`📸 Image ${img._id}: ${imageUrl}`);
+      
+      return {
+        _id: img._id,
         filename: img.filename,
-        url: `https://transporteur-backend.onrender.com/uploads/${img.filename}`
-      }));
-    }
+        url: imageUrl
+      };
+    });
+  } else {
+    console.log('⚠️ Aucune image trouvée pour ce client');
   }
+}
+ 
 
   chargerPointsGeographiques() {
     this.pointService.getAll().subscribe({

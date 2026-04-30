@@ -38,7 +38,7 @@
       <div *ngFor="let voyage of voyages" class="voyage-card">
         <mat-card>
           <mat-card-header>
-            <mat-icon mat-card-avatar>flight_takeoff</mat-icon>
+           <mat-icon mat-card-avatar style="color: #064F82;">directions_boat</mat-icon>
             <mat-card-title>Voyage #{{ voyage.matricule }}</mat-card-title>
             <mat-card-subtitle>
               Aller {{ voyage.dateAller | date:'dd/MM/yyyy' }} → Retour {{ voyage.dateRetour | date:'dd/MM/yyyy' }}

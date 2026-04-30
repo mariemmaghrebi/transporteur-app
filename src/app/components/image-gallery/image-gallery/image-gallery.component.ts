@@ -23,7 +23,9 @@ import { MatIconModule } from '@angular/material/icon';
         </button>
         
         <div class="main-image">
-          <img [src]="data.images[currentIndex]" [alt]="'Image ' + (currentIndex + 1)" (error)="onImageError(currentIndex)">
+         <img [src]="data.images[currentIndex]" 
+     [alt]="'Image ' + (currentIndex + 1)" 
+     (error)="onImageError()">
         </div>
         
         <button mat-icon-button class="nav-btn next" (click)="nextImage()" [disabled]="currentIndex === data.images.length - 1">

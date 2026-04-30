@@ -41,6 +41,7 @@ export class ClientListComponent implements OnInit {
   clients: Client[] = [];
   clientsFiltres: Client[] = [];
   pointsGeographiques: PointGeographique[] = [];
+   isSuperAdmin = false;
   
   // Filtres
   filtrePointGeo: string = '';
@@ -54,7 +55,7 @@ export class ClientListComponent implements OnInit {
     private pointService: PointGeographiqueService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { this.isSuperAdmin = this.authService.isSuperAdmin();}
 
   ngOnInit() {
     this.loadClients();
@@ -63,10 +64,10 @@ export class ClientListComponent implements OnInit {
 get voyageEstTermine(): boolean {
     return this.voyageStatut === 'termine' && !this.authService.isSuperAdmin();
   }
-  get peutAjouterClient(): boolean {
-  if (this.authService.isSuperAdmin()) return true;
-  return this.voyageStatut === 'en_attente';
-}
+get peutAjouterClient(): boolean {
+    if (this.isSuperAdmin) return true;
+    return this.voyageStatut === 'en_attente';
+  }
   loadClients() {
     if (!this.voyageId) {
       console.error('Pas de voyageId');

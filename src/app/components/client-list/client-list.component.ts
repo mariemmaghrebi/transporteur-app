@@ -80,6 +80,7 @@ get voyageEstTermine(): boolean {
     });
   }
 
+  
   loadPointsGeographiques() {
     this.pointService.getAll().subscribe({
       next: (data) => {
@@ -116,9 +117,10 @@ get voyageEstTermine(): boolean {
     this.appliquerFiltres();
   }
 
-  getImageUrl(filename: string): string {
-   return `https://transporteur-backend.onrender.com/uploads/${filename}`;
-  }
+  // Ajoute cette méthode pour obtenir l'URL de l'image
+getImageUrl(clientId: string, imageId: string): string {
+  return `https://transporteur-backend.onrender.com/api/voyages/clients/${clientId}/images/${imageId}`;
+}
 
   getPointGeoNom(pointId: string): string {
     const point = this.pointsGeographiques.find(p => p._id === pointId);
@@ -128,28 +130,20 @@ get voyageEstTermine(): boolean {
 openImageViewer(client: Client) {
   if (!client.images || client.images.length === 0) return;
   
-  // Construire l'URL complète avec le backend
-  const baseUrl = 'https://transporteur-backend.onrender.com';
-  const images = client.images.map(img => {
-    if (img.url.startsWith('http')) {
-      return img.url;
-    }
-    return `${baseUrl}${img.url}`;
-  });
-  
-  console.log('Images à afficher:', images); // Debug
+  // Utilisation de img._id au lieu de img.id
+  const images = client.images.map(img => 
+    `https://transporteur-backend.onrender.com/api/voyages/clients/${client._id}/images/${img._id}`
+  );
   
   this.dialog.open(ImageGalleryComponent, {
     data: { 
       images: images,
-      clientName: client.expediteur.nomPrenom || client.expediteur.nomPrenom
+      clientName: client.expediteur.nomPrenom
     },
     width: '90%',
-    maxWidth: '1200px',
-    panelClass: 'gallery-dialog'
+    maxWidth: '1200px'
   });
 }
-
   openAddClientDialog() {
     const dialogRef = this.dialog.open(DialogClientComponent, {
       width: '600px',

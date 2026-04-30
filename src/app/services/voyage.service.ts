@@ -30,7 +30,12 @@ export interface Client {
   totalMontant: number;
   statutPaiement: string;
   devise?: string;
-  images: Array<{ url: string; filename: string; _id?: string }>;
+  images: Array<{ 
+    _id: string;
+    filename: string; 
+    url?: string; 
+    contentType?: string;
+  }>;
 }
 
 @Injectable({

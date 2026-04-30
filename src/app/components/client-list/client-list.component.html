@@ -103,6 +103,12 @@
   <th mat-header-cell *matHeaderCellDef> Images </th>
   <td mat-cell *matCellDef="let client">
     <div class="images-cell">
+      <div class="thumbnail-list" *ngIf="client.images && client.images.length > 0">
+        <img *ngFor="let img of client.images.slice(0, 3)" 
+             [src]="getImageUrl(client._id!, img._id)" 
+             class="mini-thumbnail"
+             (click)="openImageViewer(client)">
+      </div>
       <button mat-icon-button class="view-all-images-btn" (click)="openImageViewer(client)" 
               [disabled]="!client.images || client.images.length === 0" 
               title="Voir toutes les images">

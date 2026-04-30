@@ -63,6 +63,10 @@ export class ClientListComponent implements OnInit {
 get voyageEstTermine(): boolean {
     return this.voyageStatut === 'termine' && !this.authService.isSuperAdmin();
   }
+  get peutAjouterClient(): boolean {
+  if (this.authService.isSuperAdmin()) return true;
+  return this.voyageStatut === 'en_attente';
+}
   loadClients() {
     if (!this.voyageId) {
       console.error('Pas de voyageId');

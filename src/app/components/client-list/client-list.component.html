@@ -1,10 +1,17 @@
 <div class="client-list-container">
   <div class="header">
     <h2>Gestion des clients</h2>
-    <button mat-raised-button color="primary" (click)="openAddClientDialog()">
-      <mat-icon>add</mat-icon>
-      Ajouter un client
-    </button>
+   <button mat-raised-button 
+        color="primary" 
+        (click)="openAddClientDialog()"
+        [disabled]="!peutAjouterClient">
+  <mat-icon>add</mat-icon>
+  Ajouter un client
+</button>
+
+<span *ngIf="!peutAjouterClient && !isSuperAdmin" class="info-tooltip">
+  ⚠️ Vous ne pouvez ajouter des clients qu'aux voyages en attente
+</span>
   </div>
 
   <!-- Section Filtres -->

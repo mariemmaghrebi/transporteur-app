@@ -1,7 +1,7 @@
 <div class="client-list-container">
-  <!-- ===== BLOCK P1 : FIXE (ne défile pas) ===== -->
+  <!-- BLOCK P1 : FIXE -->
   <div class="block-fixed">
-    <!-- En-tête: titre + bouton -->
+    <!-- En-tête -->
     <div class="header">
       <h2>Clients du voyage #{{ voyageNumero }}</h2>
       <button mat-raised-button 
@@ -13,7 +13,7 @@
       </button>
     </div>
 
-    <!-- Filtres à droite -->
+    <!-- Filtres -->
     <div class="filters-wrapper">
       <div class="filters-right">
         <mat-form-field appearance="outline" class="filter-small">
@@ -28,7 +28,7 @@
 
         <mat-form-field appearance="outline" class="filter-small">
           <mat-label>Rechercher</mat-label>
-          <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()" placeholder="Nom...">
+          <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()">
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
 
@@ -39,16 +39,15 @@
       </div>
     </div>
 
-    <!-- Info filtres -->
     <div class="filters-info" *ngIf="clientsFiltres.length !== clients.length">
       <mat-icon>info</mat-icon>
       <span>{{ clientsFiltres.length }} / {{ clients.length }} clients</span>
     </div>
   </div>
 
-  <!-- ===== BLOCK P2 : TABLEAU AVEC SCROLL (apparaît à partir de 4 clients) ===== -->
-  <div class="block-scroll" [class.has-scroll]="clientsFiltres.length > 4">
-    <div class="table-scroll">
+  <!-- BLOCK P2 : TABLEAU AVEC SCROLL AUTOMATIQUE -->
+  <div class="block-scroll">
+    <div class="table-wrapper">
       <table *ngIf="clientsFiltres.length > 0">
         <thead>
           <tr>

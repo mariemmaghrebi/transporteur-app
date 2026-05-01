@@ -1,4 +1,3 @@
-/* Conteneur principal */
 .client-list-container {
   padding: 16px;
   height: 100%;
@@ -6,7 +5,7 @@
   flex-direction: column;
 }
 
-/* ===== BLOCK P1 : FIXE (ne défile pas) ===== */
+/* BLOCK P1 : FIXE */
 .block-fixed {
   flex-shrink: 0;
 }
@@ -42,7 +41,7 @@
   margin-right: 4px !important;
 }
 
-/* Filtres à droite */
+/* Filtres */
 .filters-wrapper {
   display: flex;
   justify-content: flex-end;
@@ -87,7 +86,7 @@
   width: fit-content;
 }
 
-/* ===== BLOCK P2 : TABLEAU AVEC SCROLL ===== */
+/* BLOCK P2 : TABLEAU AVEC SCROLL (FONCTIONNE TOUJOURS) */
 .block-scroll {
   flex: 1;
   background: white;
@@ -97,14 +96,10 @@
   min-height: 0;
 }
 
-/* Le scroll n'apparaît que si plus de 4 clients */
-.block-scroll.has-scroll .table-scroll {
-  overflow-y: auto;
-}
-
-.table-scroll {
-  overflow-x: auto;
+.table-wrapper {
   height: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
 /* Table */
@@ -114,7 +109,7 @@ table {
   min-width: 800px;
 }
 
-/* En-tête fixe pendant le scroll */
+/* En-tête fixe */
 thead tr {
   position: sticky;
   top: 0;
@@ -206,32 +201,23 @@ td {
   margin-bottom: 12px;
 }
 
-.empty-state p {
-  color: #6b7280;
-  font-size: 13px;
-}
-
-/* Scrollbar personnalisée */
-.table-scroll::-webkit-scrollbar {
+/* Scrollbar */
+.table-wrapper::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-.table-scroll::-webkit-scrollbar-track {
+.table-wrapper::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
 
-.table-scroll::-webkit-scrollbar-thumb {
+.table-wrapper::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 10px;
 }
 
-.table-scroll::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
-}
-
-/* ===== RESPONSIVE ===== */
+/* Responsive */
 @media screen and (max-width: 768px) {
   .client-list-container {
     padding: 12px;
@@ -264,11 +250,6 @@ td {
 
   .reset-small {
     width: 100%;
-  }
-
-  .filters-info {
-    width: 100%;
-    justify-content: center;
   }
 
   th, td {

@@ -38,6 +38,7 @@ import { ImageGalleryComponent } from '../image-gallery/image-gallery/image-gall
 export class ClientListComponent implements OnInit {
   @Input() voyageId!: string;
   @Input() voyageStatut?: string;
+  @Input() voyageNumero?: string;  
   clients: Client[] = [];
   clientsFiltres: Client[] = [];
   pointsGeographiques: PointGeographique[] = [];
@@ -64,10 +65,10 @@ export class ClientListComponent implements OnInit {
 get voyageEstTermine(): boolean {
     return this.voyageStatut === 'termine' && !this.authService.isSuperAdmin();
   }
-  get voyageNumero(): string {
-  // À adapter selon comment tu passes le numéro du voyage
-  return this.voyageId ? this.voyageId.slice(-2) : '';
-}
+//   get voyageNumero(): string {
+//   // À adapter selon comment tu passes le numéro du voyage
+//   return this.voyageId ? this.voyageId.slice(-2) : '';
+// }
 get peutAjouterClient(): boolean {
     if (this.isSuperAdmin) return true;
     return this.voyageStatut === 'en_attente';

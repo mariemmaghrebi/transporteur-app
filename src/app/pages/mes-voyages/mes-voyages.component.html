@@ -86,10 +86,11 @@
     
     
     <mat-card-content>
-      <app-client-list 
-        [voyageId]="voyageSelectionne._id!" 
-        [voyageStatut]="voyageSelectionne.statut">
-      </app-client-list>
+     <app-client-list 
+  [voyageId]="voyageSelectionne._id!" 
+  [voyageStatut]="voyageSelectionne.statut"
+  [voyageNumero]="voyageSelectionne.matricule">
+</app-client-list>
     </mat-card-content>
   </mat-card>
 </div>

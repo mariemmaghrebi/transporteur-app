@@ -2,9 +2,16 @@
 .client-list-container {
   padding: 16px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ===== EN-TÊTE ===== */
+/* ===== BLOCK P1 : FIXE (ne défile pas) ===== */
+.block-fixed {
+  flex-shrink: 0;
+}
+
+/* En-tête */
 .header {
   display: flex;
   justify-content: space-between;
@@ -35,7 +42,7 @@
   margin-right: 4px !important;
 }
 
-/* ===== FILTRES À DROITE ===== */
+/* Filtres à droite */
 .filters-wrapper {
   display: flex;
   justify-content: flex-end;
@@ -80,33 +87,24 @@
   width: fit-content;
 }
 
-/* ===== TABLEAU AVEC SCROLL ===== */
-.table-wrapper {
+/* ===== BLOCK P2 : TABLEAU AVEC SCROLL ===== */
+.block-scroll {
+  flex: 1;
   background: white;
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  position: relative;
+  min-height: 0;
 }
 
-/* Le conteneur du tableau qui permet le scroll */
-.table-scroll {
+/* Le scroll n'apparaît que si plus de 4 clients */
+.block-scroll.has-scroll .table-scroll {
   overflow-y: auto;
+}
+
+.table-scroll {
   overflow-x: auto;
-  max-height: 400px;
-}
-
-/* Hauteur du scroll selon l'écran */
-@media screen and (min-width: 1200px) {
-  .table-scroll {
-    max-height: 500px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .table-scroll {
-    max-height: 300px;
-  }
+  height: 100%;
 }
 
 /* Table */
@@ -117,15 +115,11 @@ table {
 }
 
 /* En-tête fixe pendant le scroll */
-thead,
 thead tr {
   position: sticky;
   top: 0;
   background: #f8fafc;
   z-index: 10;
-}
-
-thead tr {
   border-bottom: 2px solid #e5e7eb;
 }
 
@@ -145,7 +139,6 @@ td {
   vertical-align: middle;
 }
 
-/* Matricule en gras */
 .matricule {
   font-weight: 600;
   color: #064F82;
@@ -211,6 +204,11 @@ td {
   height: 48px;
   color: #9ca3af;
   margin-bottom: 12px;
+}
+
+.empty-state p {
+  color: #6b7280;
+  font-size: 13px;
 }
 
 /* Scrollbar personnalisée */

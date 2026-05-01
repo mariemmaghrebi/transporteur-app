@@ -3,7 +3,7 @@
   <div class="p1-fixed">
     <div class="header">
       <h2>Clients du voyage #{{ voyageNumero }}</h2>
-      <button mat-raised-button class="add-client-small" (click)="openAddClientDialog()" [disabled]="!peutAjouterClient">
+     <button mat-icon-button (click)="openImageViewer(client)" [disabled]="!client.images || client.images.length === 0">
         <mat-icon>add</mat-icon>
         Ajouter un client
       </button>

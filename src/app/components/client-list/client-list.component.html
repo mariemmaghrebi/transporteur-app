@@ -1,9 +1,9 @@
 <div class="client-list-wrapper">
-  <!-- P1 : FIXE (ne bouge pas) -->
+  <!-- P1 : FIXE -->
   <div class="p1-fixed">
     <div class="header">
       <h2>Clients du voyage #{{ voyageNumero }}</h2>
-     <button mat-icon-button (click)="openImageViewer(client)" [disabled]="!client.images || client.images.length === 0">
+      <button mat-raised-button class="add-client-small" (click)="openAddClientDialog()" [disabled]="!peutAjouterClient">
         <mat-icon>add</mat-icon>
         Ajouter un client
       </button>
@@ -15,7 +15,9 @@
           <mat-label>Filtrer par point</mat-label>
           <mat-select [(ngModel)]="filtrePointGeo" (selectionChange)="onFiltreChange()">
             <mat-option value="">Tous</mat-option>
-            <mat-option *ngFor="let point of pointsGeographiques" [value]="point._id">{{ point.nom }}</mat-option>
+            <mat-option *ngFor="let point of pointsGeographiques" [value]="point._id">
+              {{ point.nom }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -32,14 +34,15 @@
     </div>
 
     <div class="filters-info" *ngIf="clientsFiltres.length !== clients.length">
-      <mat-icon>info</mat-icon> <span>{{ clientsFiltres.length }} / {{ clients.length }} clients</span>
+      <mat-icon>info</mat-icon>
+      <span>{{ clientsFiltres.length }} / {{ clients.length }} clients</span>
     </div>
   </div>
 
-  <!-- P2 : TABLEAU AVEC SCROLL VERTICAL (apparaît à partir de 4 clients) -->
-  <div class="p2-scroll" [style.height]="clientsFiltres.length > 4 ? '400px' : 'auto'">
+  <!-- P2 : TABLEAU AVEC SCROLL -->
+  <div class="p2-scroll">
     <div class="table-container">
-      <table>
+      <table *ngIf="clientsFiltres.length > 0">
         <thead>
           <tr>
             <th>Matricule</th>
@@ -55,15 +58,37 @@
         <tbody>
           <tr *ngFor="let client of clientsFiltres">
             <td class="matricule">{{ client.matricule }}</td>
-            <td><strong>{{ client.expediteur.nomPrenom }}</strong><br><small>{{ client.expediteur.telephone }}</small></td>
-            <td><strong>{{ client.destinataire.nomPrenom }}</strong><br><small>{{ client.destinataire.telephone }}</small></td>
-            <td>{{ client.nombrePieces }}</td>
-            <td>{{ client.totalMontant }} <span *ngIf="client.devise === 'EUR'">€</span><span *ngIf="client.devise === 'TND'">د.ت</span></td>
-            <td><span [class]="'badge ' + client.statutPaiement">{{ client.statutPaiement === 'paye' ? 'Payé' : 'Non payé' }}</span></td>
-            <td><button mat-icon-button (click)="openImageViewer(client)" [disabled]="!client.images?.length"><mat-icon>photo_library</mat-icon></button></td>
             <td>
-              <button mat-icon-button color="primary" (click)="editClient(client)" [disabled]="voyageEstTermine"><mat-icon>edit</mat-icon></button>
-              <button mat-icon-button color="warn" (click)="deleteClient(client._id)" [disabled]="voyageEstTermine"><mat-icon>delete</mat-icon></button>
+              <strong>{{ client.expediteur.nomPrenom }}</strong><br>
+              <small>{{ client.expediteur.telephone }}</small>
+            </td>
+            <td>
+              <strong>{{ client.destinataire.nomPrenom }}</strong><br>
+              <small>{{ client.destinataire.telephone }}</small>
+            </td>
+            <td>{{ client.nombrePieces }}</td>
+            <td>
+              {{ client.totalMontant }}
+              <span *ngIf="client.devise === 'EUR'">€</span>
+              <span *ngIf="client.devise === 'TND'">د.ت</span>
+            </td>
+            <td>
+              <span [class]="'badge ' + client.statutPaiement">
+                {{ client.statutPaiement === 'paye' ? 'Payé' : 'Non payé' }}
+              </span>
+            </td>
+            <td>
+              <button mat-icon-button (click)="openImageViewer(client)" [disabled]="!client.images || client.images.length === 0">
+                <mat-icon>photo_library</mat-icon>
+              </button>
+            </td>
+            <td>
+              <button mat-icon-button color="primary" (click)="editClient(client)" [disabled]="voyageEstTermine">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteClient(client._id)" [disabled]="voyageEstTermine">
+                <mat-icon>delete</mat-icon>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -72,6 +97,14 @@
   </div>
 
   <!-- États vides -->
-  <div *ngIf="clients.length === 0" class="empty-state"><mat-icon>people_outline</mat-icon><p>Aucun client pour ce voyage</p></div>
-  <div *ngIf="clients.length > 0 && clientsFiltres.length === 0" class="empty-state"><mat-icon>filter_alt_off</mat-icon><p>Aucun client ne correspond aux filtres</p><button mat-stroked-button (click)="resetFiltres()">Réinitialiser</button></div>
+  <div *ngIf="clients.length === 0" class="empty-state">
+    <mat-icon>people_outline</mat-icon>
+    <p>Aucun client pour ce voyage</p>
+  </div>
+
+  <div *ngIf="clients.length > 0 && clientsFiltres.length === 0" class="empty-state">
+    <mat-icon>filter_alt_off</mat-icon>
+    <p>Aucun client ne correspond aux filtres</p>
+    <button mat-stroked-button (click)="resetFiltres()">Réinitialiser</button>
+  </div>
 </div>

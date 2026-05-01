@@ -1,151 +1,115 @@
 <div class="client-list-container">
-  <!-- En-tête avec titre et bouton sur une seule ligne -->
+  <!-- En-tête: titre "Clients du voyage #1" + bouton sur une ligne -->
   <div class="header">
-    <h2>Clients du voyage</h2>
-    <div class="add-button-wrapper">
-      <button mat-raised-button 
-              class="add-client-btn" 
-              (click)="openAddClientDialog()"
-              [disabled]="!peutAjouterClient">
-        <mat-icon>add</mat-icon>
-        Ajouter un client
-      </button>
-      <span *ngIf="!peutAjouterClient && voyageStatut !== 'en_attente'" class="info-tooltip">
-        ⚠️ Ajout uniquement pour voyages en attente
-      </span>
-    </div>
+    <h2>Clients du voyage #1</h2>
+    <button mat-raised-button 
+            class="add-client-small" 
+            (click)="openAddClientDialog()"
+            [disabled]="!peutAjouterClient">
+      <mat-icon>add</mat-icon>
+      Ajouter un client
+    </button>
   </div>
 
-  <!-- Section Filtres (à droite) -->
-  <div class="filters-section">
-    <div class="filters-row">
-      <div class="filters-left">
-        <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Filtrer par point géographique</mat-label>
-          <mat-select [(ngModel)]="filtrePointGeo" (selectionChange)="onFiltreChange()">
-            <mat-option value="">Tous les points</mat-option>
-            <mat-option *ngFor="let point of pointsGeographiques" [value]="point._id">
-              <mat-icon>place</mat-icon> {{ point.nom }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+  <!-- Filtres à droite avec bouton reset -->
+  <div class="filters-wrapper">
+    <div class="filters-right">
+      <mat-form-field appearance="outline" class="filter-small">
+        <mat-label>Filtrer par point</mat-label>
+        <mat-select [(ngModel)]="filtrePointGeo" (selectionChange)="onFiltreChange()">
+          <mat-option value="">Tous</mat-option>
+          <mat-option *ngFor="let point of pointsGeographiques" [value]="point._id">
+            {{ point.nom }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Rechercher par nom</mat-label>
-          <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()" placeholder="Expéditeur ou destinataire...">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
-      
-      <button mat-stroked-button (click)="resetFiltres()" class="reset-btn" *ngIf="filtrePointGeo || filtreNomPrenom">
+      <mat-form-field appearance="outline" class="filter-small">
+        <mat-label>Rechercher</mat-label>
+        <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()" placeholder="Nom...">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <button mat-stroked-button (click)="resetFiltres()" class="reset-small" *ngIf="filtrePointGeo || filtreNomPrenom">
         <mat-icon>clear</mat-icon>
-        Réinitialiser
+        Reset
       </button>
-    </div>
-
-    <div class="filters-info" *ngIf="clientsFiltres.length !== clients.length">
-      <mat-icon>info</mat-icon>
-      <span>{{ clientsFiltres.length }} client(s) sur {{ clients.length }}</span>
     </div>
   </div>
 
-  <!-- Message si aucun client -->
+  <!-- Info filtres -->
+  <div class="filters-info" *ngIf="clientsFiltres.length !== clients.length">
+    <mat-icon>info</mat-icon>
+    <span>{{ clientsFiltres.length }} / {{ clients.length }} clients</span>
+  </div>
+
+  <!-- Tableau avec fond fixe et scroll -->
+  <div class="table-fixed">
+    <div class="table-scroll" *ngIf="clientsFiltres.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Matricule</th>
+            <th>Expéditeur</th>
+            <th>Destinataire</th>
+            <th>Pièces</th>
+            <th>Montant</th>
+            <th>Paiement</th>
+            <th>Images</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of clientsFiltres">
+            <td>{{ client.matricule }}</td>
+            <td>
+              <strong>{{ client.expediteur?.nomPrenom }}</strong><br>
+              <small>{{ client.expediteur?.telephone }}</small>
+            </td>
+            <td>
+              <strong>{{ client.destinataire?.nomPrenom }}</strong><br>
+              <small>{{ client.destinataire?.telephone }}</small>
+            </td>
+            <td>{{ client.nombrePieces }}</td>
+            <td>
+              {{ client.totalMontant }}
+              <span *ngIf="client.devise === 'EUR'">€</span>
+              <span *ngIf="client.devise === 'TND'">د.ت</span>
+            </td>
+            <td>
+              <span [class]="'badge ' + client.statutPaiement">
+                {{ client.statutPaiement === 'paye' ? 'Payé' : 'Non payé' }}
+              </span>
+            </td>
+            <td>
+              <button mat-icon-button class="view-images" (click)="openImageViewer(client)" 
+                      [disabled]="!client.images || client.images.length === 0">
+                <mat-icon>photo_library</mat-icon>
+              </button>
+            </td>
+            <td>
+              <button mat-icon-button color="primary" (click)="editClient(client)" [disabled]="voyageEstTermine">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteClient(client._id)" [disabled]="voyageEstTermine">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- États vides -->
   <div *ngIf="clients.length === 0" class="empty-state">
     <mat-icon>people_outline</mat-icon>
     <p>Aucun client pour ce voyage</p>
   </div>
 
-  <!-- Message si aucun résultat après filtres -->
   <div *ngIf="clients.length > 0 && clientsFiltres.length === 0" class="empty-state">
     <mat-icon>filter_alt_off</mat-icon>
     <p>Aucun client ne correspond aux filtres</p>
-    <button mat-stroked-button (click)="resetFiltres()">Réinitialiser les filtres</button>
-  </div>
-
-  <!-- Tableau avec scroll -->
-  <div class="table-container" *ngIf="clientsFiltres.length > 0">
-    <table mat-table [dataSource]="clientsFiltres">
-      <ng-container matColumnDef="matricule">
-        <th mat-header-cell *matHeaderCellDef> Matricule </th>
-        <td mat-cell *matCellDef="let client"> {{client.matricule}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="expediteur">
-        <th mat-header-cell *matHeaderCellDef> Expéditeur </th>
-        <td mat-cell *matCellDef="let client">
-          <strong>{{client.expediteur?.nomPrenom}}</strong><br>
-          <small>{{client.expediteur?.telephone}}</small>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="destinataire">
-        <th mat-header-cell *matHeaderCellDef> Destinataire </th>
-        <td mat-cell *matCellDef="let client">
-          <strong>{{client.destinataire?.nomPrenom}}</strong><br>
-          <small>{{client.destinataire?.telephone}}</small>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="nombrePieces">
-        <th mat-header-cell *matHeaderCellDef> Pièces </th>
-        <td mat-cell *matCellDef="let client"> {{client.nombrePieces}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="totalMontant">
-        <th mat-header-cell *matHeaderCellDef> Montant </th>
-        <td mat-cell *matCellDef="let client">
-          {{ client.totalMontant }}
-          <span *ngIf="client.devise === 'EUR'">€</span>
-          <span *ngIf="client.devise === 'TND'">د.ت</span>
-          <span *ngIf="!client.devise">€</span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="statutPaiement">
-        <th mat-header-cell *matHeaderCellDef> Paiement </th>
-        <td mat-cell *matCellDef="let client">
-          <span [class]="'badge ' + client.statutPaiement">
-            {{client.statutPaiement === 'paye' ? 'Payé' : 'Non payé'}}
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="images">
-        <th mat-header-cell *matHeaderCellDef> Images </th>
-        <td mat-cell *matCellDef="let client">
-          <div class="images-cell">
-            <button mat-icon-button class="view-all-images-btn" (click)="openImageViewer(client)" 
-                    [disabled]="!client.images || client.images.length === 0" 
-                    title="Voir toutes les images">
-              <mat-icon>photo_library</mat-icon>
-            </button>
-            <span *ngIf="!client.images || client.images.length === 0" class="no-image">Aucune image</span>
-          </div>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
-        <td mat-cell *matCellDef="let client">
-          <button mat-icon-button 
-                  color="primary" 
-                  (click)="editClient(client)" 
-                  title="Modifier"
-                  [disabled]="voyageEstTermine">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button 
-                  color="warn" 
-                  (click)="deleteClient(client._id)" 
-                  title="Supprimer"
-                  [disabled]="voyageEstTermine">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+    <button mat-stroked-button (click)="resetFiltres()">Réinitialiser</button>
   </div>
 </div>

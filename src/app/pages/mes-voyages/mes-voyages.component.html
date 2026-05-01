@@ -34,7 +34,14 @@
 
   <!-- Section des voyages (cachée quand on voit les clients) -->
   <div *ngIf="!voyageSelectionne">
-    <div class="voyages-section" *ngIf="voyages.length > 0">
+    <!-- Spinner de chargement -->
+    <div *ngIf="isLoadingVoyages" class="spinner-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Chargement des voyages...</p>
+    </div>
+
+    <!-- Liste des voyages -->
+    <div *ngIf="!isLoadingVoyages && voyages.length > 0" class="voyages-section">
       <div *ngFor="let voyage of voyages" class="voyage-card">
         <mat-card>
           <mat-card-header>
@@ -69,7 +76,7 @@
       </div>
     </div>
 
-    <div *ngIf="voyages.length === 0" class="empty-state">
+    <div *ngIf="!isLoadingVoyages && voyages.length === 0" class="empty-state">
       <mat-icon>local_shipping</mat-icon>
       <h3>Aucun voyage</h3>
       <p>Commencez par créer votre premier voyage</p>
@@ -83,14 +90,12 @@
   <!-- Section des clients (visible seulement quand on a sélectionné un voyage) -->
 <div *ngIf="voyageSelectionne" class="clients-section">
   <mat-card>
-    
-    
     <mat-card-content>
-     <app-client-list 
-  [voyageId]="voyageSelectionne._id!" 
-  [voyageStatut]="voyageSelectionne.statut"
-  [voyageNumero]="voyageSelectionne.matricule">
-</app-client-list>
+      <app-client-list 
+        [voyageId]="voyageSelectionne._id!" 
+        [voyageStatut]="voyageSelectionne.statut"
+        [voyageNumero]="voyageSelectionne.matricule">
+      </app-client-list>
     </mat-card-content>
   </mat-card>
 </div>

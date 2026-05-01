@@ -7,7 +7,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { PointGeographiqueService, PointGeographique } from '../../services/point-geographique.service';
 import { PointGeographiqueDialogComponent } from './point-geographique-dialog/point-geographique-dialog.component';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-points-geographiques',
   standalone: true,
@@ -15,6 +15,7 @@ import { PointGeographiqueDialogComponent } from './point-geographique-dialog/po
     CommonModule, 
     MatCardModule, 
     MatIconModule, 
+     MatProgressSpinnerModule,
     MatButtonModule,
     MatDialogModule,
     MatSnackBarModule
@@ -24,7 +25,7 @@ import { PointGeographiqueDialogComponent } from './point-geographique-dialog/po
 })
 export class PointsGeographiquesComponent implements OnInit {
   points: PointGeographique[] = [];
-
+ isLoading = true;  
   constructor(
     private pointService: PointGeographiqueService,
     private dialog: MatDialog,
@@ -36,12 +37,15 @@ export class PointsGeographiquesComponent implements OnInit {
   }
 
   chargerPoints() {
+    this.isLoading = true;
     this.pointService.getAll().subscribe({
       next: (data) => {
         this.points = data;
+        this.isLoading = false;
       },
       error: (error) => {
         this.snackBar.open('Erreur lors du chargement', 'Fermer', { duration: 3000 });
+        this.isLoading = false;
       }
     });
   }

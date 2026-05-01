@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { VoyageService, Voyage } from '../../services/voyage.service';
 import { AuthService } from '../../services/auth.service';
 import { ClientListComponent } from '../../components/client-list/client-list.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-mes-voyages',
@@ -23,6 +24,7 @@ import { ClientListComponent } from '../../components/client-list/client-list.co
   imports: [
     MatTooltipModule,
     CommonModule,
+    MatProgressSpinnerModule,
     RouterModule,
     FormsModule,
     MatCardModule,
@@ -45,6 +47,7 @@ export class MesVoyagesComponent implements OnInit {
   voyageSelectionne: Voyage | null = null;
   aUnVoyageEnAttente = false;
 isSuperAdmin = false;  
+ isLoadingVoyages = true; 
   constructor(
     private voyageService: VoyageService,
     private authService: AuthService,
@@ -59,13 +62,16 @@ isSuperAdmin = false;
   }
 
   chargerVoyages() {
+    this.isLoadingVoyages = true;
     this.voyageService.getVoyages().subscribe({
       next: (data) => {
         this.voyages = data;
         this.verifierVoyageEnAttente();
+        this.isLoadingVoyages = false; 
       },
       error: (error) => {
         this.snackBar.open('Erreur lors du chargement', 'Fermer', { duration: 3000 });
+        this.isLoadingVoyages = false; 
       }
     });
   }

@@ -15,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
 import { PointGeographiqueService, PointGeographique } from '../../services/point-geographique.service';
 import { DialogClientComponent } from '../dialog-client/dialog-client.component';
 import { ImageGalleryComponent } from '../image-gallery/image-gallery/image-gallery.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-client-list',
@@ -23,6 +24,7 @@ import { ImageGalleryComponent } from '../image-gallery/image-gallery/image-gall
     CommonModule,
     RouterModule,
     FormsModule,
+    MatProgressSpinnerModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
@@ -43,11 +45,11 @@ export class ClientListComponent implements OnInit {
   clientsFiltres: Client[] = [];
   pointsGeographiques: PointGeographique[] = [];
    isSuperAdmin = false;
-  
+    
   // Filtres
   filtrePointGeo: string = '';
   filtreNomPrenom: string = '';
-  
+   isLoadingClients = true;
   displayedColumns: string[] = ['matricule', 'expediteur', 'destinataire', 'nombrePieces', 'totalMontant', 'statutPaiement', 'images', 'actions'];
 
   constructor(
@@ -78,14 +80,16 @@ get peutAjouterClient(): boolean {
       console.error('Pas de voyageId');
       return;
     }
-    
+    this.isLoadingClients = true;
     this.voyageService.getClients(this.voyageId).subscribe({
       next: (data) => {
         this.clients = data;
         this.appliquerFiltres();
+         this.isLoadingClients = false;
       },
       error: (error) => {
         this.snackBar.open('Erreur lors du chargement des clients', 'Fermer', { duration: 3000 });
+         this.isLoadingClients = false;
       }
     });
   }

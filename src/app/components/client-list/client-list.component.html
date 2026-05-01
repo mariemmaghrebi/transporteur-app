@@ -2,7 +2,7 @@
   <!-- P1 : FIXE -->
   <div class="p1-fixed">
     <div class="header">
-    <h2>Clients du voyage n°{{ voyageNumero }}</h2>
+      <h2>Clients du voyage n°{{ voyageNumero }}</h2>
       <button mat-raised-button class="add-client-small" (click)="openAddClientDialog()" [disabled]="!peutAjouterClient">
         <mat-icon>add</mat-icon>
         Ajouter un client
@@ -39,8 +39,14 @@
     </div>
   </div>
 
+  <!-- Spinner de chargement des clients -->
+  <div *ngIf="isLoadingClients" class="spinner-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Chargement des clients...</p>
+  </div>
+
   <!-- P2 : TABLEAU AVEC SCROLL -->
-  <div class="p2-scroll">
+  <div *ngIf="!isLoadingClients" class="p2-scroll">
     <div class="table-container">
       <table *ngIf="clientsFiltres.length > 0">
         <thead>
@@ -97,12 +103,12 @@
   </div>
 
   <!-- États vides -->
-  <div *ngIf="clients.length === 0" class="empty-state">
+  <div *ngIf="!isLoadingClients && clients.length === 0" class="empty-state">
     <mat-icon>people_outline</mat-icon>
     <p>Aucun client pour ce voyage</p>
   </div>
 
-  <div *ngIf="clients.length > 0 && clientsFiltres.length === 0" class="empty-state">
+  <div *ngIf="!isLoadingClients && clients.length > 0 && clientsFiltres.length === 0" class="empty-state">
     <mat-icon>filter_alt_off</mat-icon>
     <p>Aucun client ne correspond aux filtres</p>
     <button mat-stroked-button (click)="resetFiltres()">Réinitialiser</button>

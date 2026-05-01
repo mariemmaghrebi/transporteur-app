@@ -61,10 +61,6 @@
   height: 40px;
 }
 
-.filter-small .mat-form-field-label {
-  font-size: 12px !important;
-}
-
 .reset-small {
   height: 40px !important;
   padding: 0 12px !important;
@@ -84,14 +80,16 @@
   width: fit-content;
 }
 
-/* ===== TABLEAU : FOND BLANC FIXE, CONTENU SCROLLABLE ===== */
+/* ===== TABLEAU AVEC SCROLL ===== */
 .table-wrapper {
   background: white;
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  position: relative;
 }
 
+/* Le conteneur du tableau qui permet le scroll */
 .table-scroll {
   overflow-y: auto;
   overflow-x: auto;
@@ -119,11 +117,15 @@ table {
 }
 
 /* En-tête fixe pendant le scroll */
+thead,
 thead tr {
   position: sticky;
   top: 0;
   background: #f8fafc;
   z-index: 10;
+}
+
+thead tr {
   border-bottom: 2px solid #e5e7eb;
 }
 
@@ -141,6 +143,12 @@ td {
   font-size: 12px;
   border-bottom: 1px solid #f0f2f5;
   vertical-align: middle;
+}
+
+/* Matricule en gras */
+.matricule {
+  font-weight: 600;
+  color: #064F82;
 }
 
 /* Badges */

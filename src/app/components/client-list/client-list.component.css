@@ -1,16 +1,96 @@
-.client-list-container {
-  padding: 16px;
+.client-list-wrapper {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-/* BLOCK P1 : FIXE */
-.block-fixed {
+/* P1 : FIXE (ne bouge pas) */
+.p1-fixed {
   flex-shrink: 0;
 }
 
-/* En-tête */
+/* P2 : SCROLLABLE - LA PARTIE IMPORTANTE */
+.p2-scroll {
+  overflow-y: auto;      /* Active le scroll vertical */
+  overflow-x: auto;      /* Active le scroll horizontal si besoin */
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-height: 400px;     /* ← CE QUI MANQUAIT ! Hauteur max avant scroll */
+  flex: 1;
+  min-height: 0;         /* Important pour flexbox */
+}
+
+/* Pour que le scroll apparaisse à partir de 4 clients */
+@media screen and (min-height: 600px) {
+  .p2-scroll {
+    max-height: 350px;
+  }
+}
+
+@media screen and (min-height: 800px) {
+  .p2-scroll {
+    max-height: 450px;
+  }
+}
+
+.table-container {
+  min-width: 800px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead tr {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  z-index: 10;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+th {
+  padding: 12px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  background: #f8fafc;
+}
+
+td {
+  padding: 10px 8px;
+  font-size: 12px;
+  border-bottom: 1px solid #f0f2f5;
+  vertical-align: middle;
+}
+
+.matricule {
+  font-weight: 600;
+  color: #064F82;
+}
+
+/* Badges */
+.badge {
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.badge.paye { 
+  background: #d1fae5; 
+  color: #059669; 
+}
+
+.badge.non_paye { 
+  background: #fee2e2; 
+  color: #dc2626; 
+}
+
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -29,7 +109,6 @@
   background-color: #F48438 !important;
   color: white !important;
   border-radius: 6px !important;
-  padding: 0 12px !important;
   height: 32px !important;
   font-size: 12px !important;
 }
@@ -86,104 +165,6 @@
   width: fit-content;
 }
 
-/* BLOCK P2 : TABLEAU AVEC SCROLL (FONCTIONNE TOUJOURS) */
-.block-scroll {
-  flex: 1;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  min-height: 0;
-}
-
-.table-wrapper {
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: auto;
-}
-
-/* Table */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 800px;
-}
-
-/* En-tête fixe */
-thead tr {
-  position: sticky;
-  top: 0;
-  background: #f8fafc;
-  z-index: 10;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-th {
-  padding: 12px 8px !important;
-  font-size: 12px;
-  font-weight: 600;
-  color: #1e293b;
-  text-align: left;
-  background: #f8fafc;
-}
-
-td {
-  padding: 10px 8px !important;
-  font-size: 12px;
-  border-bottom: 1px solid #f0f2f5;
-  vertical-align: middle;
-}
-
-.matricule {
-  font-weight: 600;
-  color: #064F82;
-}
-
-/* Badges */
-.badge {
-  padding: 3px 8px;
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 500;
-  display: inline-block;
-}
-
-.badge.paye {
-  background: #d1fae5;
-  color: #059669;
-}
-
-.badge.non_paye {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-/* Images */
-.view-images {
-  width: 32px !important;
-  height: 32px !important;
-  color: #064F82;
-}
-
-.view-images mat-icon {
-  font-size: 18px !important;
-  width: 18px !important;
-  height: 18px !important;
-}
-
-/* Actions */
-.mat-icon-button {
-  width: 32px !important;
-  height: 32px !important;
-  line-height: 32px !important;
-}
-
-.mat-icon-button mat-icon {
-  font-size: 18px !important;
-  width: 18px !important;
-  height: 18px !important;
-}
-
 /* Empty state */
 .empty-state {
   text-align: center;
@@ -201,59 +182,82 @@ td {
   margin-bottom: 12px;
 }
 
-/* Scrollbar */
-.table-wrapper::-webkit-scrollbar {
+.empty-state p {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* Scrollbar personnalisée */
+.p2-scroll::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-.table-wrapper::-webkit-scrollbar-track {
+.p2-scroll::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
 
-.table-wrapper::-webkit-scrollbar-thumb {
+.p2-scroll::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 10px;
 }
 
-/* Responsive */
+.p2-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* ===== RESPONSIVE ===== */
 @media screen and (max-width: 768px) {
-  .client-list-container {
+  .client-list-wrapper {
     padding: 12px;
   }
-
+  
   .header {
     flex-direction: column;
-    gap: 12px;
     align-items: stretch;
-  }
-
-  .header h2 {
     text-align: center;
+    gap: 12px;
+  }
+  
+  .header h2 {
     font-size: 16px;
   }
-
+  
   .add-client-small {
     width: 100%;
     justify-content: center;
   }
-
+  
+  .filters-wrapper {
+    justify-content: stretch;
+  }
+  
   .filters-right {
     width: 100%;
     flex-direction: column;
   }
-
+  
   .filter-small {
     width: 100%;
   }
-
+  
   .reset-small {
     width: 100%;
   }
-
+  
+  .p2-scroll {
+    max-height: 250px;
+  }
+  
   th, td {
     font-size: 10px !important;
     padding: 8px 4px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .p2-scroll {
+    max-height: 200px;
   }
 }

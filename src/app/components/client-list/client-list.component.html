@@ -1,7 +1,7 @@
 <div class="client-list-container">
-  <!-- En-tête: titre "Clients du voyage #1" + bouton sur une ligne -->
+  <!-- En-tête: titre + bouton sur une ligne -->
   <div class="header">
-    <h2>Clients du voyage #1</h2>
+    <h2>Clients du voyage #{{ voyageNumero }}</h2>
     <button mat-raised-button 
             class="add-client-small" 
             (click)="openAddClientDialog()"
@@ -11,7 +11,7 @@
     </button>
   </div>
 
-  <!-- Filtres à droite avec bouton reset -->
+  <!-- Filtres à droite -->
   <div class="filters-wrapper">
     <div class="filters-right">
       <mat-form-field appearance="outline" class="filter-small">
@@ -43,10 +43,10 @@
     <span>{{ clientsFiltres.length }} / {{ clients.length }} clients</span>
   </div>
 
-  <!-- Tableau avec fond fixe et scroll -->
-  <div class="table-fixed">
-    <div class="table-scroll" *ngIf="clientsFiltres.length > 0">
-      <table>
+  <!-- TABLEAU : fond blanc fixe, contenu scrollable -->
+  <div class="table-wrapper">
+    <div class="table-scroll">
+      <table *ngIf="clientsFiltres.length > 0">
         <thead>
           <tr>
             <th>Matricule</th>
@@ -61,14 +61,14 @@
         </thead>
         <tbody>
           <tr *ngFor="let client of clientsFiltres">
-            <td>{{ client.matricule }}</td>
+            <td class="matricule">{{ client.matricule }}</td>
             <td>
-              <strong>{{ client.expediteur?.nomPrenom }}</strong><br>
-              <small>{{ client.expediteur?.telephone }}</small>
+              <strong>{{ client.expediteur.nomPrenom }}</strong><br>
+              <small>{{ client.expediteur.telephone }}</small>
             </td>
             <td>
-              <strong>{{ client.destinataire?.nomPrenom }}</strong><br>
-              <small>{{ client.destinataire?.telephone }}</small>
+              <strong>{{ client.destinataire.nomPrenom }}</strong><br>
+              <small>{{ client.destinataire.telephone }}</small>
             </td>
             <td>{{ client.nombrePieces }}</td>
             <td>

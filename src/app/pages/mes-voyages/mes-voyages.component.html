@@ -83,14 +83,7 @@
   <!-- Section des clients (visible seulement quand on a sélectionné un voyage) -->
 <div *ngIf="voyageSelectionne" class="clients-section">
   <mat-card>
-    <mat-card-header>
-      <div class="clients-header">
-        <mat-card-title>
-          <mat-icon>people</mat-icon>
-          Clients du voyage #{{ voyageSelectionne.matricule }}
-        </mat-card-title>
-      </div>
-    </mat-card-header>
+    
     
     <mat-card-content>
       <app-client-list 

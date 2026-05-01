@@ -64,6 +64,10 @@ export class ClientListComponent implements OnInit {
 get voyageEstTermine(): boolean {
     return this.voyageStatut === 'termine' && !this.authService.isSuperAdmin();
   }
+  get voyageNumero(): string {
+  // À adapter selon comment tu passes le numéro du voyage
+  return this.voyageId ? this.voyageId.slice(-2) : '';
+}
 get peutAjouterClient(): boolean {
     if (this.isSuperAdmin) return true;
     return this.voyageStatut === 'en_attente';

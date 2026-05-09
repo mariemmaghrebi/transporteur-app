@@ -1,35 +1,41 @@
 <div class="client-list-wrapper">
-  <!-- P1 : FIXE -->
+  <!-- P1 : FIXE - TOUT SUR UNE SEULE LIGNE -->
   <div class="p1-fixed">
-    <div class="header">
-      <h2>Clients du voyage n°{{ voyageNumero }}</h2>
-      <button mat-raised-button class="add-client-small" (click)="openAddClientDialog()" [disabled]="!peutAjouterClient">
-        <mat-icon>add</mat-icon>
-        Ajouter un client
-      </button>
-    </div>
-
-    <div class="filters-wrapper">
-      <div class="filters-right">
-        <mat-form-field appearance="outline" class="filter-small">
-          <mat-label>Filtrer par point</mat-label>
-          <mat-select [(ngModel)]="filtrePointGeo" (selectionChange)="onFiltreChange()">
-            <mat-option value="">Tous</mat-option>
-            <mat-option *ngFor="let point of pointsGeographiques" [value]="point._id">
-              {{ point.nom }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="filter-small">
-          <mat-label>Rechercher</mat-label>
-          <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-
-        <button mat-stroked-button (click)="resetFiltres()" class="reset-small" *ngIf="filtrePointGeo || filtreNomPrenom">
-          <mat-icon>clear</mat-icon> Reset
+    <!-- Nouvelle ligne unique -->
+    <div class="header-row">
+      <div class="title-section">
+        <h2>Clients du voyage n°{{ voyageNumero }}</h2>
+      </div>
+      
+      <div class="add-button-section">
+        <button mat-raised-button class="add-client-small" (click)="openAddClientDialog()" [disabled]="!peutAjouterClient">
+          <mat-icon>add</mat-icon>
+          Ajouter un client
         </button>
+      </div>
+      
+      <div class="filters-section-header">
+        <div class="filters-right">
+          <mat-form-field appearance="outline" class="filter-small">
+            <mat-label>Filtrer par point</mat-label>
+            <mat-select [(ngModel)]="filtrePointGeo" (selectionChange)="onFiltreChange()">
+              <mat-option value="">Tous</mat-option>
+              <mat-option *ngFor="let point of pointsGeographiques" [value]="point._id">
+                {{ point.nom }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-small">
+            <mat-label>Rechercher</mat-label>
+            <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <button mat-stroked-button (click)="resetFiltres()" class="reset-small" *ngIf="filtrePointGeo || filtreNomPrenom">
+            <mat-icon>clear</mat-icon> Reset
+          </button>
+        </div>
       </div>
     </div>
 

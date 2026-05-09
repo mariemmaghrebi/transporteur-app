@@ -75,25 +75,29 @@ get peutAjouterClient(): boolean {
     if (this.isSuperAdmin) return true;
     return this.voyageStatut === 'en_attente';
   }
-  loadClients() {
-    if (!this.voyageId) {
-      console.error('Pas de voyageId');
-      return;
-    }
-    this.isLoadingClients = true;
-    this.voyageService.getClients(this.voyageId).subscribe({
-      next: (data) => {
-        this.clients = data;
-        this.appliquerFiltres();
-         this.isLoadingClients = false;
-      },
-      error: (error) => {
-        this.snackBar.open('Erreur lors du chargement des clients', 'Fermer', { duration: 3000 });
-         this.isLoadingClients = false;
-      }
-    });
+loadClients() {
+  if (!this.voyageId) {
+    console.error('Pas de voyageId');
+    return;
   }
-
+  this.isLoadingClients = true;
+  this.voyageService.getClients(this.voyageId).subscribe({
+    next: (data) => {
+      // Trier les clients par date décroissante (du plus récent au plus ancien)
+      this.clients = data.sort((a, b) => {
+        const dateA = new Date(a.date || 0);
+        const dateB = new Date(b.date || 0);
+        return dateB.getTime() - dateA.getTime();
+      });
+      this.appliquerFiltres();
+      this.isLoadingClients = false;
+    },
+    error: (error) => {
+      this.snackBar.open('Erreur lors du chargement des clients', 'Fermer', { duration: 3000 });
+      this.isLoadingClients = false;
+    }
+  });
+}
   
   loadPointsGeographiques() {
     this.pointService.getAll().subscribe({

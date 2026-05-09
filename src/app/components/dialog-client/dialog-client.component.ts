@@ -57,8 +57,8 @@ export class DialogClientComponent implements OnInit {
       destinataireNomPrenom: ['', Validators.required],
       destinataireTelephone: ['', Validators.required],
       pointGeo: ['', Validators.required],
-      nombrePieces: [1, [Validators.required, Validators.min(1)]],
-      totalMontant: [0, [Validators.required, Validators.min(0)]],
+      nombrePieces: ['', [Validators.required, Validators.min(1)]],
+      totalMontant: ['', [Validators.required, Validators.min(0)]],
       statutPaiement: ['non_paye', Validators.required],
       devise: ['EUR', Validators.required]
     });

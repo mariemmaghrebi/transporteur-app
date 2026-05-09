@@ -90,15 +90,19 @@
               </span>
             </td>
             <td>
-              <button mat-icon-button (click)="openImageViewer(client)" [disabled]="!client.images || client.images.length === 0">
+              <!-- Bouton Images - affiche la galerie des images stockées localement -->
+              <button mat-icon-button 
+                      (click)="openImageViewer(client)" 
+                      [disabled]="!hasLocalImages(client._id!)"
+                      matTooltip="Voir les images">
                 <mat-icon>photo_library</mat-icon>
               </button>
             </td>
             <td>
-              <button mat-icon-button color="primary" (click)="editClient(client)" [disabled]="voyageEstTermine">
+              <button mat-icon-button color="primary" (click)="editClient(client)" [disabled]="voyageEstTermine" matTooltip="Modifier">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="deleteClient(client._id)" [disabled]="voyageEstTermine">
+              <button mat-icon-button color="warn" (click)="deleteClient(client._id)" [disabled]="voyageEstTermine" matTooltip="Supprimer">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
@@ -112,11 +116,12 @@
   <div *ngIf="!isLoadingClients && clients.length === 0" class="empty-state">
     <mat-icon>people_outline</mat-icon>
     <p>Aucun client pour ce voyage</p>
+    <button mat-stroked-button (click)="openAddClientDialog()">Ajouter un client</button>
   </div>
 
   <div *ngIf="!isLoadingClients && clients.length > 0 && clientsFiltres.length === 0" class="empty-state">
     <mat-icon>filter_alt_off</mat-icon>
     <p>Aucun client ne correspond aux filtres</p>
-    <button mat-stroked-button (click)="resetFiltres()">Réinitialiser</button>
+    <button mat-stroked-button (click)="resetFiltres()">Réinitialiser les filtres</button>
   </div>
 </div>

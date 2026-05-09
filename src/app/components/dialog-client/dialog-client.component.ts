@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { VoyageService, Client } from '../../services/voyage.service';
 import { PointGeographiqueService, PointGeographique } from '../../services/point-geographique.service';
+import { ImageStorageService, StoredImage } from '../../services/image-storage.service';
 
 @Component({
   selector: 'app-dialog-client',
@@ -35,7 +36,7 @@ export class DialogClientComponent implements OnInit {
   isEditMode = false;
   clientId: string | null = null;
   
-  existingImages: Array<{ filename: string; url: string }> = [];
+  existingImages: StoredImage[] = [];
   newImages: File[] = [];
   imagesToDelete: string[] = [];
   previewUrls: string[] = [];
@@ -44,6 +45,7 @@ export class DialogClientComponent implements OnInit {
     private fb: FormBuilder,
     private voyageService: VoyageService,
     private pointService: PointGeographiqueService,
+    private imageStorage: ImageStorageService,
     private dialogRef: MatDialogRef<DialogClientComponent>,
     private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { voyageId: string; client?: Client }
@@ -52,7 +54,7 @@ export class DialogClientComponent implements OnInit {
     this.clientId = data.client?._id || null;
     
     this.clientForm = this.fb.group({
-     expediteurNomPrenom: ['', Validators.required],
+      expediteurNomPrenom: ['', Validators.required],
       expediteurTelephone: ['', Validators.required],
       destinataireNomPrenom: ['', Validators.required],
       destinataireTelephone: ['', Validators.required],
@@ -86,27 +88,10 @@ export class DialogClientComponent implements OnInit {
       devise: client.devise || 'EUR'
     });
   }
-loadExistingImages(client: Client) {
-  console.log('🖼️ Client reçu pour modification:', client);
-  console.log('🖼️ Images du client:', client.images);
-  
-  if (client.images && client.images.length > 0) {
-    this.existingImages = client.images.map(img => {
-      // Construire l'URL à partir de l'ID de l'image et de l'ID du client
-      const imageUrl = `https://transporteur-backend.onrender.com/api/voyages/clients/${client._id}/images/${img._id}`;
-      console.log(`📸 Image ${img._id}: ${imageUrl}`);
-      
-      return {
-        _id: img._id,
-        filename: img.filename,
-        url: imageUrl
-      };
-    });
-  } else {
-    console.log('⚠️ Aucune image trouvée pour ce client');
+
+  loadExistingImages(client: Client) {
+    this.existingImages = this.imageStorage.getImages(client._id!);
   }
-}
- 
 
   chargerPointsGeographiques() {
     this.pointService.getAll().subscribe({
@@ -142,22 +127,22 @@ loadExistingImages(client: Client) {
     this.previewUrls.splice(index, 1);
   }
 
-  markImageForDelete(filename: string) {
-    this.imagesToDelete.push(filename);
-    this.existingImages = this.existingImages.filter(img => img.filename !== filename);
+  markImageForDelete(imageId: string) {
+    this.imagesToDelete.push(imageId);
+    this.existingImages = this.existingImages.filter(img => img.id !== imageId);
   }
 
-  async onSubmit() {
+  onSubmit() {
     if (this.clientForm.valid) {
       this.isLoading = true;
       
       const clientData: any = {
         expediteur: {
-         nomPrenom: this.clientForm.value.expediteurNomPrenom,
+          nomPrenom: this.clientForm.value.expediteurNomPrenom,
           telephone: this.clientForm.value.expediteurTelephone
         },
         destinataire: {
-         nomPrenom: this.clientForm.value.destinataireNomPrenom,
+          nomPrenom: this.clientForm.value.destinataireNomPrenom,
           telephone: this.clientForm.value.destinataireTelephone
         },
         pointGeo: this.clientForm.value.pointGeo,
@@ -168,12 +153,16 @@ loadExistingImages(client: Client) {
       };
       
       if (this.isEditMode && this.clientId) {
+        // Supprimer les images marquées
         for (const imageId of this.imagesToDelete) {
-          await this.voyageService.deleteImage(this.clientId, imageId).toPromise();
+          this.imageStorage.deleteImage(this.clientId, imageId);
         }
-        for (const file of this.newImages) {
-          await this.voyageService.uploadImage(this.clientId, file).toPromise();
+        
+        // Sauvegarder les nouvelles images
+        if (this.newImages.length > 0) {
+          this.imageStorage.saveImages(this.clientId, this.newImages);
         }
+        
         this.voyageService.updateClient(this.clientId, clientData).subscribe({
           next: () => {
             this.isLoading = false;
@@ -190,13 +179,10 @@ loadExistingImages(client: Client) {
         clientData.matricule = this.genererMatricule();
         
         this.voyageService.addClient(this.data.voyageId, clientData).subscribe({
-          next: async (client) => {
-            for (const file of this.newImages) {
-              try {
-                await this.voyageService.uploadImage(client._id!, file).toPromise();
-              } catch (error) {
-                console.error('Erreur upload image:', error);
-              }
+          next: (client) => {
+            // Sauvegarder les images en localStorage
+            if (this.newImages.length > 0) {
+              this.imageStorage.saveImages(client._id!, this.newImages);
             }
             this.isLoading = false;
             this.snackBar.open('Client ajouté avec succès !', 'Fermer', { duration: 3000 });

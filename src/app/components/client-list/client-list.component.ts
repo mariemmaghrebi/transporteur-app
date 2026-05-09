@@ -16,7 +16,7 @@ import { PointGeographiqueService, PointGeographique } from '../../services/poin
 import { DialogClientComponent } from '../dialog-client/dialog-client.component';
 import { ImageGalleryComponent } from '../image-gallery/image-gallery/image-gallery.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { ImageStorageService } from '../../services/image-storage.service';
 @Component({
   selector: 'app-client-list',
   standalone: true,
@@ -57,7 +57,8 @@ export class ClientListComponent implements OnInit {
     private authService: AuthService,
     private pointService: PointGeographiqueService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+     private imageStorage: ImageStorageService
   ) { this.isSuperAdmin = this.authService.isSuperAdmin();}
 
   ngOnInit() {
@@ -150,16 +151,12 @@ getImageUrl(clientId: string, imageId: string): string {
   }
 
 openImageViewer(client: Client) {
-  if (!client.images || client.images.length === 0) return;
-  
-  // Utilisation de img._id au lieu de img.id
-  const images = client.images.map(img => 
-    `https://transporteur-backend.onrender.com/api/voyages/clients/${client._id}/images/${img._id}`
-  );
+  const images = this.imageStorage.getImages(client._id!);
+  if (images.length === 0) return;
   
   this.dialog.open(ImageGalleryComponent, {
     data: { 
-      images: images,
+      images: images.map(img => img.data),
       clientName: client.expediteur.nomPrenom
     },
     width: '90%',
@@ -192,21 +189,24 @@ openImageViewer(client: Client) {
     });
   }
 
-  deleteClient(clientId: string | undefined) {
-    if (!clientId) return;
+deleteClient(clientId: string | undefined) {
+  if (!clientId) return;
+  
+  if (confirm('Voulez-vous vraiment supprimer ce client ?')) {
+    // Supprimer aussi les images du localStorage
+    this.imageStorage.deleteAllImages(clientId);
     
-    if (confirm('Voulez-vous vraiment supprimer ce client ?')) {
-      this.voyageService.deleteClient(clientId).subscribe({
-        next: () => {
-          this.snackBar.open('Client supprimé avec succès', 'Fermer', { duration: 3000 });
-          this.loadClients();
-        },
-        error: (error) => {
-          this.snackBar.open('Erreur lors de la suppression', 'Fermer', { duration: 3000 });
-        }
-      });
-    }
+    this.voyageService.deleteClient(clientId).subscribe({
+      next: () => {
+        this.snackBar.open('Client supprimé avec succès', 'Fermer', { duration: 3000 });
+        this.loadClients();
+      },
+      error: (error) => {
+        this.snackBar.open('Erreur lors de la suppression', 'Fermer', { duration: 3000 });
+      }
+    });
   }
+}
 
   deleteImage(clientId: string | undefined, image: any, event: Event) {
     event.stopPropagation();
@@ -224,4 +224,10 @@ openImageViewer(client: Client) {
       });
     }
   }
+  // Vérifier si un client a des images en localStorage
+hasLocalImages(clientId: string): boolean {
+  const images = this.imageStorage.getImages(clientId);
+  return images && images.length > 0;
+}
+
 }

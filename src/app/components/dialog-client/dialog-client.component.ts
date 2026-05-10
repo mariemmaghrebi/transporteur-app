@@ -132,70 +132,71 @@ export class DialogClientComponent implements OnInit {
     this.existingImages = this.existingImages.filter(img => img.id !== imageId);
   }
 
-  onSubmit() {
-    if (this.clientForm.valid) {
-      this.isLoading = true;
-      
-      const clientData: any = {
-        expediteur: {
-          nomPrenom: this.clientForm.value.expediteurNomPrenom,
-          telephone: this.clientForm.value.expediteurTelephone
-        },
-        destinataire: {
-          nomPrenom: this.clientForm.value.destinataireNomPrenom,
-          telephone: this.clientForm.value.destinataireTelephone
-        },
-        pointGeo: this.clientForm.value.pointGeo,
-        nombrePieces: this.clientForm.value.nombrePieces,
-        totalMontant: this.clientForm.value.totalMontant,
-        statutPaiement: this.clientForm.value.statutPaiement,
-        devise: this.clientForm.value.devise
-      };
-      
-      if (this.isEditMode && this.clientId) {
-        // Supprimer les images marquées
-        for (const imageId of this.imagesToDelete) {
-          this.imageStorage.deleteImage(this.clientId, imageId);
-        }
-        
-        // Sauvegarder les nouvelles images
-        if (this.newImages.length > 0) {
-          this.imageStorage.saveImages(this.clientId, this.newImages);
-        }
-        
-        this.voyageService.updateClient(this.clientId, clientData).subscribe({
-          next: () => {
-            this.isLoading = false;
-            this.snackBar.open('Client modifié avec succès !', 'Fermer', { duration: 3000 });
-            this.dialogRef.close(true);
-          },
-          error: (error) => {
-            this.isLoading = false;
-            this.snackBar.open(error.error.message || 'Erreur lors de la modification', 'Fermer', { duration: 3000 });
-          }
-        });
-      } else {
-        clientData.date = new Date();
-        clientData.matricule = this.genererMatricule();
-        
-        this.voyageService.addClient(this.data.voyageId, clientData).subscribe({
-          next: (client) => {
-            // Sauvegarder les images en localStorage
-            if (this.newImages.length > 0) {
-              this.imageStorage.saveImages(client._id!, this.newImages);
-            }
-            this.isLoading = false;
-            this.snackBar.open('Client ajouté avec succès !', 'Fermer', { duration: 3000 });
-            this.dialogRef.close(true);
-          },
-          error: (error) => {
-            this.isLoading = false;
-            this.snackBar.open(error.error.message || 'Erreur lors de l\'ajout', 'Fermer', { duration: 3000 });
-          }
-        });
+  // Modifier la méthode onSubmit pour utiliser async/await
+async onSubmit() {
+  if (this.clientForm.valid) {
+    this.isLoading = true;
+    
+    const clientData: any = {
+      expediteur: {
+        nomPrenom: this.clientForm.value.expediteurNomPrenom,
+        telephone: this.clientForm.value.expediteurTelephone
+      },
+      destinataire: {
+        nomPrenom: this.clientForm.value.destinataireNomPrenom,
+        telephone: this.clientForm.value.destinataireTelephone
+      },
+      pointGeo: this.clientForm.value.pointGeo,
+      nombrePieces: this.clientForm.value.nombrePieces,
+      totalMontant: this.clientForm.value.totalMontant,
+      statutPaiement: this.clientForm.value.statutPaiement,
+      devise: this.clientForm.value.devise
+    };
+    
+    if (this.isEditMode && this.clientId) {
+      // Supprimer les images marquées
+      for (const imageId of this.imagesToDelete) {
+        this.imageStorage.deleteImage(this.clientId, imageId);
       }
+      
+      // Sauvegarder les nouvelles images
+      if (this.newImages.length > 0) {
+        await this.imageStorage.saveImages(this.clientId, this.newImages);
+      }
+      
+      this.voyageService.updateClient(this.clientId, clientData).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.snackBar.open('Client modifié avec succès !', 'Fermer', { duration: 3000 });
+          this.dialogRef.close(true);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.snackBar.open(error.error.message || 'Erreur lors de la modification', 'Fermer', { duration: 3000 });
+        }
+      });
+    } else {
+      clientData.date = new Date();
+      clientData.matricule = this.genererMatricule();
+      
+      this.voyageService.addClient(this.data.voyageId, clientData).subscribe({
+        next: async (client) => {
+          // Sauvegarder les images en localStorage
+          if (this.newImages.length > 0) {
+            await this.imageStorage.saveImages(client._id!, this.newImages);
+          }
+          this.isLoading = false;
+          this.snackBar.open('Client ajouté avec succès !', 'Fermer', { duration: 3000 });
+          this.dialogRef.close(true);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.snackBar.open(error.error.message || 'Erreur lors de l\'ajout', 'Fermer', { duration: 3000 });
+        }
+      });
     }
   }
+}
 
   genererMatricule(): string {
     const date = new Date();

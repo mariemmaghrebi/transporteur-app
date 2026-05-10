@@ -98,7 +98,7 @@
         <p class="section-label">Images actuelles :</p>
         <div class="images-list">
           <div *ngFor="let img of existingImages" class="image-item">
-            <img [src]="img.url" class="preview-image">
+            <img [src]="img.data" class="preview-image">
             <button type="button" class="delete-image-btn" (click)="markImageForDelete(img.filename)">
               <mat-icon>delete</mat-icon>
             </button>

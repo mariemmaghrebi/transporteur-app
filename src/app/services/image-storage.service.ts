@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 export interface StoredImage {
   id: string;
-  data: string;
+  data: string;      // Base64 string
   filename: string;
   type: string;
   uploadDate: Date;
@@ -14,17 +14,31 @@ export interface StoredImage {
 export class ImageStorageService {
   private storageKey = 'client_images';
   
+  // Convertir un fichier en Base64
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+  
   // Sauvegarder les images d'un client
-  saveImages(clientId: string, images: File[]): void {
+  async saveImages(clientId: string, images: File[]): Promise<void> {
     const allImages = this.getAllImages();
     
-    const newImages = images.map(file => ({
-      id: Date.now() + '-' + Math.random().toString(36).substr(2, 9),
-      data: URL.createObjectURL(file),
-      filename: file.name,
-      type: file.type,
-      uploadDate: new Date()
-    }));
+    const newImages: StoredImage[] = [];
+    for (const file of images) {
+      const base64 = await this.fileToBase64(file);
+      newImages.push({
+        id: Date.now() + '-' + Math.random().toString(36).substr(2, 9),
+        data: base64,
+        filename: file.name,
+        type: file.type,
+        uploadDate: new Date()
+      });
+    }
     
     allImages[clientId] = [...(allImages[clientId] || []), ...newImages];
     localStorage.setItem(this.storageKey, JSON.stringify(allImages));

@@ -558,7 +558,7 @@
 
 /* Champ devise - forcer la taille */
 .currency-field {
-  width: 80px !important;
+  width: 110px !important;
   flex: none !important;
 }
 
@@ -567,14 +567,14 @@
 }
 
 .currency-field .mat-select {
-  width: 80px !important;
+  width: 110px !important;
 }
 
 /* Forcer le dropdown avec ::ng-deep pour perfer l'encapsulation */
 ::ng-deep .mat-select-panel.currency-dropdown-panel {
-  width: 80px !important;
-  min-width: 80px !important;
-  max-width: 80px !important;
+  width: 110px !important;
+  min-width: 110px !important;
+  max-width: 110px !important;
   left: auto !important;
   right: auto !important;
 }

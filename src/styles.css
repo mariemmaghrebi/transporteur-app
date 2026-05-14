@@ -159,9 +159,9 @@ body {
 }
 /* Forcer la largeur du dropdown de devise */
 .currency-dropdown-panel {
-  width: 80px !important;
-  min-width: 80px !important;
-  max-width: 80px !important;
+  width: 110px !important;
+  min-width: 110px !important;
+  max-width: 110px !important;
 }
 
 .currency-dropdown-panel .mat-option {

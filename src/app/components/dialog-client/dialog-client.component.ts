@@ -138,8 +138,8 @@ async onSubmit() {
     this.isLoading = true;
     // Vérifier la taille des images avant de continuer
     for (const file of this.newImages) {
-      if (file.size > 2 * 1024 * 1024) {
-        this.snackBar.open(`L'image ${file.name} dépasse 2MB`, 'Fermer', { duration: 3000 });
+      if (file.size > 5* 1024 * 1024) {
+        this.snackBar.open(`L'image ${file.name} dépasse 5MB`, 'Fermer', { duration: 3000 });
         this.isLoading = false;
         return;
       }

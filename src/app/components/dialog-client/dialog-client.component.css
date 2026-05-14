@@ -64,7 +64,7 @@
 /* Champ devise compact */
 .compact-currency {
   flex: 0.8;
-  max-width: 110px;
+  max-width: 50px;
 }
 
 .compact-currency .mat-form-field-wrapper {

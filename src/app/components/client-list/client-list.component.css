@@ -39,6 +39,7 @@
 .filters-section-header {
   flex: 2;
   min-width: 300px;
+  padding-top: 20PX;
 }
 
 .filters-right {

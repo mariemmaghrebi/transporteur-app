@@ -35,6 +35,7 @@
   padding: 20px;
   overflow-y: auto;
   flex: 1;
+  max-height: 60vh;
 }
 
 .dialog-content h3 {
@@ -58,6 +59,28 @@
 
 .half-width {
   flex: 1;
+}
+
+/* Champ devise compact */
+.compact-currency {
+  flex: 0.8;
+  max-width: 110px;
+}
+
+.compact-currency .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.compact-currency .mat-form-field-flex {
+  height: 56px;
+}
+
+.compact-currency .mat-form-field-infix {
+  padding: 8px 0;
+}
+
+.compact-currency .mat-select-value-text {
+  font-size: 13px;
 }
 
 /* Styles pour les images */
@@ -206,6 +229,10 @@
     gap: 16px;
   }
   
+  .compact-currency {
+    max-width: 100px;
+  }
+  
   .image-item {
     width: 70px;
     height: 70px;
@@ -261,6 +288,11 @@
   .full-width,
   .half-width {
     margin-bottom: 12px;
+  }
+  
+  .compact-currency {
+    max-width: 100%;
+    width: 100%;
   }
   
   /* Ajustement des champs de formulaire */
@@ -517,10 +549,4 @@
     opacity: 1;
     transform: scale(1) translateY(0);
   }
-}
-.dialog-content {
-  padding: 20px;
-  overflow-y: auto;
-  flex: 1;
-  max-height: 60vh; 
 }

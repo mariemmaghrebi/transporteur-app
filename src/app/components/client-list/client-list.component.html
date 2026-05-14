@@ -27,7 +27,7 @@
 
           <mat-form-field appearance="outline" class="filter-small">
             <mat-label>Rechercher</mat-label>
-            <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()">
+            <input matInput [(ngModel)]="filtreNomPrenom" (input)="onFiltreChange()" placeholder="Nom...">
             <mat-icon matSuffix>search</mat-icon>
           </mat-form-field>
 
@@ -56,66 +56,72 @@
       <table *ngIf="clientsFiltres.length > 0">
         <thead>
           <tr>
-            <th>Matricule</th>
-            <th>Expéditeur</th>
-            <th>Destinataire</th>
-            <th>Point géographique</th>
-            <th>Pièces</th>
-            <th>Montant</th>
-            <th>Paiement</th>
-            <th>Images</th>
-            <th>Actions</th>
+            <th class="col-matricule">Matricule</th>
+            <th class="col-expediteur">Expéditeur</th>
+            <th class="col-destinataire">Destinataire</th>
+            <th class="col-point-geo">Point géographique</th>
+            <th class="col-pieces">Pièces</th>
+            <th class="col-montant">Montant</th>
+            <th class="col-paiement">Paiement</th>
+            <th class="col-images">Images</th>
+            <th class="col-actions">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let client of clientsFiltres">
             <td class="matricule">{{ client.matricule }}</td>
-            <td>
+            <td class="expediteur-cell">
               <strong>{{ client.expediteur.nomPrenom }}</strong><br>
               <small>{{ client.expediteur.telephone }}</small>
             </td>
-            <td>
+            <td class="destinataire-cell">
               <strong>{{ client.destinataire.nomPrenom }}</strong><br>
               <small>{{ client.destinataire.telephone }}</small>
             </td>
-            <td class="point-geo">
-              <mat-icon>place</mat-icon>
-              {{ getPointGeoNom(client.pointGeo) }}
+            <td class="point-geo-cell">
+              <div class="point-geo">
+                <mat-icon>place</mat-icon>
+                <span>{{ getPointGeoNom(client.pointGeo) }}</span>
+              </div>
             </td>
-            <td>{{ client.nombrePieces }}</td>
-            <td>
+            <td class="pieces-cell">{{ client.nombrePieces }}</td>
+            <td class="montant-cell">
               {{ client.totalMontant }}
               <span *ngIf="client.devise === 'EUR'">€</span>
               <span *ngIf="client.devise === 'TND'">د.ت</span>
             </td>
-            <td>
+            <td class="paiement-cell">
               <span [class]="'badge ' + client.statutPaiement">
                 {{ client.statutPaiement === 'paye' ? 'Payé' : 'Non payé' }}
               </span>
             </td>
-            <td>
+            <td class="images-cell">
               <button mat-icon-button 
+                      class="view-images-btn" 
                       (click)="openImageViewer(client)" 
                       [disabled]="!hasLocalImages(client._id!)"
                       matTooltip="Voir les images">
                 <mat-icon>photo_library</mat-icon>
               </button>
             </td>
-            <td>
-              <button mat-icon-button color="primary" (click)="editClient(client)" [disabled]="voyageEstTermine" matTooltip="Modifier">
+            <td class="actions-cell">
+              <button mat-icon-button 
+                      class="edit-btn" 
+                      (click)="editClient(client)" 
+                      [disabled]="voyageEstTermine" 
+                      matTooltip="Modifier">
                 <mat-icon>edit</mat-icon>
               </button>
-              <!-- Bouton Supprimer : visible uniquement pour Super Admin -->
               <button *ngIf="isSuperAdmin" 
                       mat-icon-button 
-                      color="warn" 
+                      class="delete-btn" 
                       (click)="deleteClient(client._id)" 
                       [disabled]="voyageEstTermine" 
                       matTooltip="Supprimer">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
-          </tr>
+           </tr>
         </tbody>
       </table>
     </div>

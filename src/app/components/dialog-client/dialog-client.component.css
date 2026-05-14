@@ -64,7 +64,7 @@
 /* Champ devise compact */
 .compact-currency {
   flex: 0.8;
-  max-width: 50px;
+  max-width: 110px;
 }
 
 .compact-currency .mat-form-field-wrapper {
@@ -549,4 +549,49 @@
     opacity: 1;
     transform: scale(1) translateY(0);
   }
+}
+/* Champ total */
+.total-field {
+  flex: 2;
+}
+
+/* Champ devise - ultra compact */
+.currency-field {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.currency-field .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.currency-field .mat-form-field-flex {
+  height: 56px;
+}
+
+.currency-field .mat-form-field-infix {
+  padding: 8px 0;
+}
+
+.currency-field .mat-select-value {
+  text-align: center;
+  font-size: 13px;
+}
+
+/* Contrôle la largeur du dropdown */
+::ng-deep .currency-field .mat-select-panel {
+  min-width: 80px !important;
+  width: 80px !important;
+}
+
+::ng-deep .currency-field .mat-option {
+  font-size: 12px;
+  text-align: center;
+  padding: 0 8px;
+  min-width: auto;
+}
+
+::ng-deep .currency-field .mat-option .mat-option-text {
+  text-align: center;
 }

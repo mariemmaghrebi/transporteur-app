@@ -13,7 +13,7 @@ export interface StoredImage {
 })
 export class ImageStorageService {
   private storageKey = 'client_images';
-  private MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB max pour tablette
+  private MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB max
   private MAX_IMAGES_PER_CLIENT = 5; // Limite de 5 images par client
 
   // Convertir un fichier en Base64 avec limite de taille
@@ -21,13 +21,52 @@ export class ImageStorageService {
     return new Promise((resolve, reject) => {
       // Vérifier la taille du fichier
       if (file.size > this.MAX_FILE_SIZE) {
-        reject(new Error(`L'image ne doit pas dépasser 2MB (${(file.size / 1024 / 1024).toFixed(2)}MB)`));
+        reject(new Error(`L'image ne doit pas dépasser 5MB (${(file.size / 1024 / 1024).toFixed(2)}MB)`));
         return;
       }
 
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Compression optionnelle pour les grandes images
+  private compressImage(file: File): Promise<File> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxWidth = 1024;
+          
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const compressedFile = new File([blob], file.name, { type: 'image/jpeg' });
+              resolve(compressedFile);
+            } else {
+              resolve(file);
+            }
+          }, 'image/jpeg', 0.8);
+        };
+        img.onerror = () => resolve(file);
+        img.src = e.target.result;
+      };
+      reader.onerror = () => resolve(file);
       reader.readAsDataURL(file);
     });
   }
@@ -45,7 +84,13 @@ export class ImageStorageService {
     const newImages: StoredImage[] = [];
     for (const file of images) {
       try {
-        const base64 = await this.fileToBase64(file);
+        // Compresser l'image si elle est grande
+        let fileToProcess = file;
+        if (file.size > 2 * 1024 * 1024) {
+          fileToProcess = await this.compressImage(file);
+        }
+        
+        const base64 = await this.fileToBase64(fileToProcess);
         newImages.push({
           id: Date.now() + '-' + Math.random().toString(36).substr(2, 9),
           data: base64,

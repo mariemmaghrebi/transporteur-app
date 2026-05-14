@@ -106,14 +106,14 @@
         </div>
       </div>
 
-      <!-- Upload nouvelles images -->
-      <div class="upload-box" (click)="fileInput.click()">
-        <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden>
-        <mat-icon>cloud_upload</mat-icon>
-        <p>Cliquez pour ajouter des photos</p>
-        <small>Formats acceptés : JPG, PNG (max 5MB)</small>
-      </div>
-
+ <!-- Upload nouvelles images -->
+<div class="upload-box" (click)="fileInput.click()">
+  <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden>
+  <mat-icon>cloud_upload</mat-icon>
+  <p>Cliquez pour ajouter des photos</p>
+  <small>Formats acceptés : JPG, PNG (max 2MB par image)</small>
+  <small *ngIf="newImages.length > 0">📸 {{ newImages.length }} image(s) sélectionnée(s)</small>
+</div>
       <!-- Aperçu des nouvelles images -->
       <div *ngIf="previewUrls.length > 0" class="images-section">
         <p class="section-label">Nouvelles images :</p>

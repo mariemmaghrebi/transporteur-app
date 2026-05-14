@@ -580,21 +580,34 @@
   font-size: 13px;
 }
 
-/* Contrôle la largeur du dropdown */
-::ng-deep .mat-select-panel {
+/* Cibler UNIQUEMENT le dropdown de la devise */
+::ng-deep .currency-field .mat-select-panel {
   min-width: 80px !important;
   width: 80px !important;
   max-width: 80px !important;
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
 }
 
-::ng-deep .mat-option {
+::ng-deep .currency-field .mat-option {
   font-size: 12px;
   text-align: center;
   padding: 0 8px !important;
-  min-width: auto !important;
+  min-width: 80px !important;
   width: 80px !important;
 }
 
-::ng-deep .mat-option .mat-option-text {
+::ng-deep .currency-field .mat-option .mat-option-text {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* S'assurer que le conteneur du dropdown est aussi limité */
+::ng-deep .cdk-overlay-pane:has(.currency-field .mat-select-panel) {
+  min-width: 80px !important;
+  width: 80px !important;
+  max-width: 80px !important;
 }

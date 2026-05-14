@@ -1,7 +1,6 @@
 <div class="client-list-wrapper">
-  <!-- P1 : FIXE - TOUT SUR UNE SEULE LIGNE -->
+  <!-- P1 : FIXE -->
   <div class="p1-fixed">
-    <!-- Nouvelle ligne unique -->
     <div class="header-row">
       <div class="title-section">
         <h2>Clients du voyage n°{{ voyageNumero }}</h2>
@@ -45,7 +44,7 @@
     </div>
   </div>
 
-  <!-- Spinner de chargement des clients -->
+  <!-- Spinner de chargement -->
   <div *ngIf="isLoadingClients" class="spinner-container">
     <mat-spinner diameter="40"></mat-spinner>
     <p>Chargement des clients...</p>
@@ -60,6 +59,7 @@
             <th>Matricule</th>
             <th>Expéditeur</th>
             <th>Destinataire</th>
+            <th>Point géographique</th>
             <th>Pièces</th>
             <th>Montant</th>
             <th>Paiement</th>
@@ -78,6 +78,10 @@
               <strong>{{ client.destinataire.nomPrenom }}</strong><br>
               <small>{{ client.destinataire.telephone }}</small>
             </td>
+            <td class="point-geo">
+              <mat-icon>place</mat-icon>
+              {{ getPointGeoNom(client.pointGeo) }}
+            </td>
             <td>{{ client.nombrePieces }}</td>
             <td>
               {{ client.totalMontant }}
@@ -90,7 +94,6 @@
               </span>
             </td>
             <td>
-              <!-- Bouton Images - affiche la galerie des images stockées localement -->
               <button mat-icon-button 
                       (click)="openImageViewer(client)" 
                       [disabled]="!hasLocalImages(client._id!)"
@@ -102,7 +105,13 @@
               <button mat-icon-button color="primary" (click)="editClient(client)" [disabled]="voyageEstTermine" matTooltip="Modifier">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="deleteClient(client._id)" [disabled]="voyageEstTermine" matTooltip="Supprimer">
+              <!-- Bouton Supprimer : visible uniquement pour Super Admin -->
+              <button *ngIf="isSuperAdmin" 
+                      mat-icon-button 
+                      color="warn" 
+                      (click)="deleteClient(client._id)" 
+                      [disabled]="voyageEstTermine" 
+                      matTooltip="Supprimer">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>

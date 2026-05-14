@@ -94,7 +94,19 @@
   color: #064F82;
   width: fit-content;
 }
+/* Dans client-list.component.css */
+.point-geo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
+.point-geo mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #F48438;
+}
 /* P2 : SCROLLABLE */
 .p2-scroll {
   overflow-y: auto;

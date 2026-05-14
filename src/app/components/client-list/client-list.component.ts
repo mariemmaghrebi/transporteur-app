@@ -50,8 +50,7 @@ export class ClientListComponent implements OnInit {
   filtrePointGeo: string = '';
   filtreNomPrenom: string = '';
    isLoadingClients = true;
-  displayedColumns: string[] = ['matricule', 'expediteur', 'destinataire', 'nombrePieces', 'totalMontant', 'statutPaiement', 'images', 'actions'];
-
+ displayedColumns: string[] = ['matricule', 'expediteur', 'destinataire', 'pointGeo', 'nombrePieces', 'totalMontant', 'statutPaiement', 'images', 'actions'];
   constructor(
     private voyageService: VoyageService,
     private authService: AuthService,

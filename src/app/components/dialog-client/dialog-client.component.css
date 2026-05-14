@@ -556,58 +556,37 @@
 }
 
 
-/* Champ devise */
+/* Champ devise - forcer la taille */
 .currency-field {
-  width: 80px;
-  min-width: 80px;
-  max-width: 80px;
+  width: 80px !important;
+  flex: none !important;
 }
 
 .currency-field .mat-form-field-wrapper {
-  padding-bottom: 0;
+  width: 100% !important;
 }
 
-.currency-field .mat-form-field-flex {
-  height: 56px;
-}
-
-.currency-field .mat-form-field-infix {
-  padding: 8px 0;
-}
-
-.currency-field .mat-select-value {
-  text-align: center;
-  font-size: 13px;
-}
-
-/* Cibler UNIQUEMENT le dropdown de la devise */
-::ng-deep .currency-field .mat-select-panel {
-  min-width: 80px !important;
+.currency-field .mat-select {
   width: 80px !important;
+}
+
+/* Forcer le dropdown avec ::ng-deep pour perfer l'encapsulation */
+::ng-deep .mat-select-panel.currency-dropdown-panel {
+  width: 80px !important;
+  min-width: 80px !important;
   max-width: 80px !important;
-  position: relative !important;
   left: auto !important;
   right: auto !important;
 }
 
-::ng-deep .currency-field .mat-option {
+::ng-deep .mat-select-panel.currency-dropdown-panel .mat-option {
   font-size: 12px;
   text-align: center;
   padding: 0 8px !important;
-  min-width: 80px !important;
-  width: 80px !important;
 }
 
-::ng-deep .currency-field .mat-option .mat-option-text {
+::ng-deep .mat-select-panel.currency-dropdown-panel .mat-option .mat-option-text {
   text-align: center;
-  display: flex;
   justify-content: center;
-  align-items: center;
 }
 
-/* S'assurer que le conteneur du dropdown est aussi limité */
-::ng-deep .cdk-overlay-pane:has(.currency-field .mat-select-panel) {
-  min-width: 80px !important;
-  width: 80px !important;
-  max-width: 80px !important;
-}

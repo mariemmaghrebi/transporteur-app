@@ -157,3 +157,20 @@ body {
   color: #6b7280;
   font-size: 14px;
 }
+/* Forcer la largeur du dropdown de devise */
+.currency-dropdown-panel {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+
+.currency-dropdown-panel .mat-option {
+  font-size: 12px !important;
+  text-align: center !important;
+  padding: 0 8px !important;
+}
+
+.currency-dropdown-panel .mat-option .mat-option-text {
+  text-align: center !important;
+  justify-content: center !important;
+}
